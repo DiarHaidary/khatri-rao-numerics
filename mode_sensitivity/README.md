@@ -1,17 +1,20 @@
 # Common-mode sensitivity of the head/tail experiment
 
-This comparison uses the actual Gaussian product probes and one fixed
-generic tail subspace for each common-mode product. It does not replace
-the tail by an independent Gaussian surrogate.
+The product cases use actual Gaussian product probes and one fixed
+generic tail subspace for each common-mode product. They do not replace
+the tail by an independent Gaussian surrogate. The table also includes
+a separate dense Gaussian reference from Figure 3.
 
 All cases use target rank **32**, sketch size **97**, support dimension
 **194**, unit optimal squared tail, and zero-output ratio **33**.
-There are **128 independent trials per case**, with seed **2026100905**.
-The different cases have different ambient inputs; the tail is fixed
-before sampling and is never redrawn between trials.
+There are **128 independent trials per case**. Product cases use seed
+**2026100905**; the dense reference uses the Figure 3 seed **2026100903**.
+The different product cases have different ambient inputs; the tail is
+fixed before sampling and is never redrawn between trials.
 
-| Order | Common modes | Common-mode product | Ambient dimension | Median relative error | Trial 10--90% quantiles |
+| Sketch / order | Common modes | Common-mode product | Ambient dimension | Median relative error | Trial 10--90% quantiles |
 | --- | --- | ---: | ---: | ---: | ---: |
+| Dense Gaussian | -- | -- | 512 | 1.292 | 1.274--1.309 |
 | 2 | 16 | 16 | 512 | 1.479 | 1.375--1.592 |
 | 3 | 4 x 4 | 16 | 512 | 1.692 | 1.504--1.931 |
 | 3 | 16 x 16 | 256 | 8192 | 1.975 | 1.718--2.303 |
@@ -87,3 +90,12 @@ errors appear to level off over the tested ranks. In particular, the
 order-four median is 1.956630 at rank 128 and 1.941483 at rank 256. These
 finite-trial observations do not establish a limiting error or a uniform
 bound in rank. The original raw trials and curves are unchanged.
+
+## Dense reference for the paper table
+
+The dense row is imported from head_tail/head_tail_summary.csv at
+r=32, m=97, R=194, with 128 trials and seed 2026100903. Gaussian rotational invariance
+makes this projected law independent of the ambient tensor mode sizes.
+The product cases retain their original separate paired trials.
+Run `python mode_sensitivity/make_table_reference.py` to rebuild
+table_with_dense_reference.csv. Both experiments here have m/R=1/2.

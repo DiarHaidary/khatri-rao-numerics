@@ -20,7 +20,8 @@ import matplotlib.pyplot as plt
 SEED=2026100907
 RANK=32
 P=512
-SUPPORT=15*RANK
+SUPPORT=1536
+CONTROL_SUPPORT=480
 RATIOS=[1.5,2,3,4,6,8,12]
 WIDTHS=[int(x*RANK) for x in RATIOS]
 FACTORS={2:[512],3:[16,32],4:[8,8,8]}
@@ -37,39 +38,58 @@ def product_rows(factors):
     for f in factors[1:]: result=(result[:,:,None]*f[:,None,:]).reshape(len(result),-1)
     return result
 
-def run(out,trials):
+def run(out,trials,support_rank=SUPPORT):
     out.mkdir(parents=True,exist_ok=True); started=time.perf_counter()
     validation=validate(); seeds=np.random.SeedSequence(SEED).spawn(6)
     basis_rng=np.random.default_rng(seeds[0])
-    s=SUPPORT-RANK; N=RANK*P; maximum=max(WIDTHS)
+    s=support_rank-RANK; N=RANK*P; maximum=max(WIDTHS)
+    if s<maximum or support_rank>N: raise ValueError('Require max(m)+r <= R <= N for this exact solver.')
     basis=thin_haar(basis_rng.standard_normal((N-RANK,s)))
     orth=float(np.max(abs(basis.T@basis-np.eye(s))))
     digest=hashlib.sha256(basis.tobytes(order='C')).hexdigest()
     assert orth<1e-11
-    blocks=[np.asfortranarray(basis[k::P-1]) for k in range(P-1)]
-    del basis
     streams=[np.random.default_rng(x) for x in seeds[1:]]
-    rows=[]; diagnostics=[]
+    rows=[]; diagnostics=[]; comparison=[]
+    controls=[CONTROL_SUPPORT] if CONTROL_SUPPORT<support_rank else []
     for trial in range(trials):
         first=streams[0].standard_normal((maximum,RANK))
         dense=streams[1].standard_normal((s,maximum))
         for m in WIDTHS:
             error,info=error_from_head_tail(first[:m].T,dense[:,:m].copy(),trial==0)
-            rows.append(dict(d=0,r=RANK,m=m,m_over_r=m/RANK,ambient_dimension=N,support_dimension=SUPPORT,trial=trial,**error))
+            rows.append(dict(d=0,r=RANK,m=m,m_over_r=m/RANK,capture_fraction=m/support_rank,ambient_dimension=N,support_dimension=support_rank,trial=trial,**error))
             diagnostics.append(dict(d=0,m=m,trial=trial,**info))
+            if m in [96,384]:
+                comparison.append(dict(d=0,r=RANK,m=m,m_over_r=m/RANK,support_dimension=support_rank,capture_fraction=m/support_rank,trial=trial,rankr_ratio=error['rankr_ratio']))
+                for control in controls:
+                    small,_=error_from_head_tail(first[:m].T,dense[:control-RANK,:m].copy(),trial==0)
+                    comparison.append(dict(d=0,r=RANK,m=m,m_over_r=m/RANK,support_dimension=control,capture_fraction=m/control,trial=trial,rankr_ratio=small['rankr_ratio']))
         common={d:product_rows([streams[j+2].standard_normal((maximum,n)) for n in FACTORS[d]]) for j,d in enumerate([2,3,4])}
-        tails={d:np.zeros((s,maximum)) for d in [2,3,4]}
-        for k,block in enumerate(blocks):
-            contracted=block.T@first.T
-            for d in [2,3,4]: tails[d]+=contracted*common[d][:,k+1]
         for d in [2,3,4]:
             head=first.T*common[d][:,0]
+            actual_tail_coordinates=(first[:,:,None]*common[d][:,None,1:]).reshape(maximum,N-RANK)
+            tail=basis.T@actual_tail_coordinates.T
+            del actual_tail_coordinates
             for m in WIDTHS:
-                error,info=error_from_head_tail(head[:,:m],tails[d][:,:m].copy(),trial==0 and d==4)
-                rows.append(dict(d=d,r=RANK,m=m,m_over_r=m/RANK,ambient_dimension=N,support_dimension=SUPPORT,trial=trial,**error))
+                error,info=error_from_head_tail(head[:,:m],tail[:,:m].copy(),trial==0 and d==4)
+                rows.append(dict(d=d,r=RANK,m=m,m_over_r=m/RANK,capture_fraction=m/support_rank,ambient_dimension=N,support_dimension=support_rank,trial=trial,**error))
                 diagnostics.append(dict(d=d,m=m,trial=trial,**info))
+                if d==4 and m in [96,384]:
+                    comparison.append(dict(d=d,r=RANK,m=m,m_over_r=m/RANK,support_dimension=support_rank,capture_fraction=m/support_rank,trial=trial,rankr_ratio=error['rankr_ratio']))
+                    for control in controls:
+                        small,_=error_from_head_tail(head[:,:m],tail[:control-RANK,:m].copy(),trial==0)
+                        comparison.append(dict(d=d,r=RANK,m=m,m_over_r=m/RANK,support_dimension=control,capture_fraction=m/control,trial=trial,rankr_ratio=small['rankr_ratio']))
+            del tail
         if (trial+1)%16==0: print(f'Oversampling: {trial+1}/{trials} paired trials; {time.perf_counter()-started:.1f}s',flush=True)
     save_csv(out/'oversampling_trials.csv',rows); save_csv(out/'solver_diagnostics.csv',diagnostics)
+    save_csv(out/'rank_comparison_trials.csv',comparison)
+    compared=[]
+    for d in [0,4]:
+        for m in [96,384]:
+            for support in sorted(set([support_rank]+controls)):
+                values=[v['rankr_ratio'] for v in comparison if v['d']==d and v['m']==m and v['support_dimension']==support]
+                compared.append(dict(d=d,r=RANK,m=m,m_over_r=m/RANK,support_dimension=support,capture_fraction=m/support,
+                                     trials=len(values),median=float(np.median(values)),q10=float(np.quantile(values,.1)),q90=float(np.quantile(values,.9))))
+    save_csv(out/'rank_comparison_summary.csv',compared)
     largest_increase=max(float(np.max(np.diff([v['rankr_ratio'] for v in rows if v['d']==d and v['trial']==trial]))) for d in [0,2,3,4] for trial in range(trials))
     assert largest_increase<=1e-10
     summary=[]
@@ -77,12 +97,12 @@ def run(out,trials):
         for m in WIDTHS:
             group=[v for v in rows if v['d']==d and v['m']==m]
             values=np.array([v['rankr_ratio'] for v in group])
-            item=dict(d=d,r=RANK,m=m,m_over_r=m/RANK,trials=len(group),median=float(np.median(values)),
+            item=dict(d=d,r=RANK,m=m,m_over_r=m/RANK,support_dimension=support_rank,capture_fraction=m/support_rank,trials=len(group),median=float(np.median(values)),
                       q10=float(np.quantile(values,.1)),q90=float(np.quantile(values,.9)),mean=float(np.mean(values)))
             for limit in [1.5,1.2,1.1]: item['fraction_below_'+str(limit).replace('.','p')]=float(np.mean(values<=limit))
             summary.append(item)
     save_csv(out/'oversampling_summary.csv',summary)
-    metadata=dict(seed=SEED,rank=RANK,ambient_dimension=N,support_dimension=SUPPORT,common_product=P,
+    metadata=dict(seed=SEED,rank=RANK,ambient_dimension=N,support_dimension=support_rank,common_product=P,
                   common_mode_dimensions=FACTORS,widths=WIDTHS,ratios=RATIOS,trials=trials,
                   basis_shape=[N-RANK,s],basis_seed_spawn_key=list(seeds[0].spawn_key),basis_sha256_compact_C=digest,
                   basis_gram_max_error=orth,validation=validation,
@@ -91,11 +111,14 @@ def run(out,trials):
                   python=platform.python_version(),numpy=np.__version__,scipy=scipy.__version__,matplotlib=matplotlib.__version__,
                   seconds=time.perf_counter()-started,blas_threads=int(os.environ['KR_BLAS_THREADS']),
                   maximum_error_increase_across_nested_widths=largest_increase,
-                  design='One fixed Haar tail and the same two-level spectrum for every width and law. m is always below input rank 480. Prefixes nested within each trial and law; first-mode Gaussian matrix shared across laws.',
+                  minimum_capture_fraction=min(WIDTHS)/support_rank,maximum_capture_fraction=max(WIDTHS)/support_rank,
+                  rank_controls=controls,rank_control_design='Smaller tail is the prefix of the larger fixed Haar tail. Same probes and head; each input has unit optimal squared tail.',
+                  design=f'One fixed Haar tail and the same two-level spectrum for every width and law. Input rank is {support_rank}. Prefixes nested within each trial and law; first-mode Gaussian matrix shared across laws.',
                   interpretation='Empirical medians and trial quantiles on one fixed input. Threshold crossings do not establish theorem-level sample complexity.')
     (out/'metadata.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     plot(out,summary); inline(out,summary,trials)
-    print(json.dumps(summary,indent=2),flush=True)
+    print('Support-rank comparison:',json.dumps(compared,indent=2),flush=True)
+    print('Sweep medians:',json.dumps([{k:v for k,v in row.items() if k in ['d','m_over_r','median','q90']} for row in summary]),flush=True)
 
 def plot(out,summary):
     plt.rcParams.update({'font.size':10,'pdf.fonttype':42,'ps.fonttype':42})
@@ -108,11 +131,14 @@ def plot(out,summary):
     ax.set_xscale('log',base=2); ax.set_yscale('log')
     ax.set_xticks(RATIOS,labels=[str(v) for v in RATIOS])
     ax.set_yticks([1,1.5,2,3,5,10,15],labels=['1','1.5','2','3','5','10','15'])
-    ax.set(xlabel='Oversampling ratio m/r',ylabel='Squared rank-r error / optimal tail',title='Oversampling on one fixed input (r = 32; common-mode product 512)')
+    support=int(summary[0]['support_dimension'])
+    ax.set(xlabel='Oversampling ratio m/r',ylabel='Squared rank-r error / optimal tail',title=f'Oversampling on one fixed input (r = 32; R = {support}; common-mode product 512)')
     ax.grid(alpha=.2); ax.set_axisbelow(True); ax.legend(fontsize=9,frameon=False)
     fig.tight_layout(); fig.savefig(out/'oversampling.pdf',bbox_inches='tight'); fig.savefig(out/'oversampling.png',dpi=190,bbox_inches='tight'); plt.close(fig)
 
 def inline(out,summary,trials):
+    support=int(summary[0]['support_dimension'])
+    maximum_fraction=max(v['capture_fraction'] for v in summary)
     colors={0:'osInk',2:'osCyan',3:'osBlue',4:'osPink'}
     marks={0:'*',2:'square*',3:'triangle*',4:'diamond*'}
     parts=[r'\begin{figure}[H]',r'\centering\begingroup',r'\definecolor{osInk}{HTML}{29234F}',r'\definecolor{osCyan}{HTML}{00B9D8}',r'\definecolor{osBlue}{HTML}{254BE8}',r'\definecolor{osPink}{HTML}{EA5CB5}',r'\definecolor{osRef}{HTML}{7042DF}',r'\begin{tikzpicture}',
@@ -125,10 +151,11 @@ def inline(out,summary,trials):
         parts.append(r'\addplot[color='+colors[d]+',thick,mark='+marks[d]+',mark size=1.8pt] coordinates {'+coords('median')+'};')
         parts.append(r'\addlegendentry{'+LABELS[d].replace('d=',r'$d=')+('$' if d else '')+'}')
     parts.extend([r'\addplot[osRef,dashed] coordinates {(1.5,1.5)(12,1.5)};',r'\addlegendentry{Target error $1.5$}',r'\end{axis}\end{tikzpicture}\endgroup',
-                  r'\caption{Oversampling on one fixed input. Target rank is $r=32$, ambient dimension $N=16384$, and input rank $R=480$ throughout the sweep. The common-factor head has singular values one and the fixed generic tail has singular values $1/\sqrt{448}$, so its optimal squared tail is one. Common modes are $(512)$, $(16,32)$, and $(8,8,8)$ for orders $2,3,4$, all with product 512. Every width is a nested prefix of the same trial; all widths stay below the input rank. Lines are medians and bands are empirical 10--90\% quantiles from '+str(trials)+r' independent trials per law. The dashed line marks relative error $1.5$; observed crossings are descriptive and are not sample-complexity guarantees.}',
+                  r'\caption{Oversampling on one fixed input. Target rank is $r=32$, ambient dimension $N=16384$, and input rank $R='+str(support)+r'$ throughout the sweep. The head singular values are one and the tail singular values are $1/\sqrt{'+str(support-RANK)+r'}$, so the optimal squared tail is one. Common modes are $(512)$, $(16,32)$, and $(8,8,8)$ for orders $2,3,4$, all with product 512. Widths are nested prefixes of each trial and satisfy $m/R\le '+f'{maximum_fraction:g}'+r'$. Lines are medians and bands are empirical 10--90\% quantiles from '+str(trials)+r' independent trials per law. The dashed line marks relative error $1.5$; observed crossings are descriptive, not sample-complexity guarantees.}',
                   r'\label{fig:oversampling}',r'\end{figure}'])
     (out/'oversampling_inline.tex').write_text('\n'.join(parts)+'\n',encoding='utf-8')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(); p.add_argument('--output',type=Path,default=Path(__file__).resolve().parent); p.add_argument('--trials',type=int,default=96)
-    a=p.parse_args(); run(a.output,a.trials)
+    p.add_argument('--support-rank',type=int,default=SUPPORT)
+    a=p.parse_args(); run(a.output,a.trials,a.support_rank)

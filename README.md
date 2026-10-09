@@ -13,7 +13,7 @@ Reproducible code and data accompanying Diar Heidary's manuscript,
 | `head_tail/` | Common-factor head with generic tail; ranks through 1024 and ambient dimension through 16384 |
 | `regression_finite_size/` | Finite-sample check of asymptotic weighted-regression inflation |
 | `mode_sensitivity/` | Fixed-input comparison across common-mode sizes, with paired identical head sketches |
-| `oversampling/` | Fixed-input m/r sweep, with common-mode product 512 |
+| `oversampling/` | Fixed-input m/r sweep at R=1536, m/R <= 1/4, plus a paired input-rank control |
 | `weighted_regression_checks.py` | Independent numerical checks of the weighted regression identities |
 
 The folders include source, raw trials, summaries, fixed bases where applicable,
@@ -33,7 +33,7 @@ python generic_support/generic_approximation.py --output rerun_generic
 python head_tail/head_tail_experiment.py --output rerun_head_tail
 python regression_finite_size/regression_finite_size.py --output rerun_regression
 python mode_sensitivity/mode_sensitivity.py --output rerun_sensitivity
-python oversampling/oversampling_experiment.py --output rerun_oversampling
+python oversampling/oversampling_experiment.py --output rerun_oversampling --support-rank 1536
 python weighted_regression_checks.py
 ```
 
@@ -81,3 +81,10 @@ See `head_tail/LARGE_RANK_README.md` for the exact large-rank implementation
 and validation. The common-mode comparison is a compact table in the paper,
 and `oversampling/` supplies the added fixed-input oversampling panel.
 Original rank-at-most-256 observations are retained unchanged.
+
+## Input-rank correction
+
+The current Figure 4 uses R=1536 so that m/R never exceeds 1/4.
+The old R=480 data are preserved in oversampling/legacy_R480/. A paired
+rank comparison and an explicit dense reference for the mode-size table
+make the different input-rank regimes visible. See oversampling/README.md.
