@@ -1,0 +1,40 @@
+\begin{figure}[H]
+\centering\begingroup
+\definecolor{genericInk}{HTML}{2F3034}
+\definecolor{genericBlue}{HTML}{254BE8}
+\definecolor{genericRose}{HTML}{EA5CB5}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.55cm},width=.39\linewidth,height=4.2cm,scale only axis,xlabel={Sketch size $m$},xtick={12,16,24,32,40},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=none,at={(.97,.97)},anchor=north east}]
+\nextgroupplot[title={Generic fixed support, $d=2$},ylabel={$\|A-\widehat A_8\|_F^2/\tau_8(A)$}]
+\addplot[draw=none,forget plot,name path=g20q10] coordinates {(12,1.87389308) (16,1.539038606) (24,1.225961344) (32,1.1026819) (40,1.035814718)};
+\addplot[draw=none,forget plot,name path=g20q90] coordinates {(12,2.507729716) (16,1.884591428) (24,1.356830235) (32,1.155942665) (40,1.068093559)};
+\addplot[draw=none,forget plot,fill=genericInk,fill opacity=.14] fill between[of=g20q10 and g20q90];
+\addplot[color=genericInk,thick,mark=*,mark size=1.7pt] coordinates {(12,2.17070593) (16,1.685774379) (24,1.277403411) (32,1.128419478) (40,1.048097497)};
+\addplot[draw=none,forget plot,name path=g21q10] coordinates {(12,1.917053457) (16,1.5189458) (24,1.231373506) (32,1.10370865) (40,1.035587013)};
+\addplot[draw=none,forget plot,name path=g21q90] coordinates {(12,2.597995839) (16,1.929938884) (24,1.359426589) (32,1.165569761) (40,1.062075113)};
+\addplot[draw=none,forget plot,fill=genericBlue,fill opacity=.14] fill between[of=g21q10 and g21q90];
+\addplot[color=genericBlue,thick,mark=square*,mark size=1.7pt] coordinates {(12,2.217052744) (16,1.695102748) (24,1.285057959) (32,1.130200993) (40,1.047995477)};
+\addplot[draw=none,forget plot,name path=g22q10] coordinates {(12,1.916147509) (16,1.528596437) (24,1.226628618) (32,1.102783774) (40,1.038251837)};
+\addplot[draw=none,forget plot,name path=g22q90] coordinates {(12,2.535914207) (16,1.846554699) (24,1.354526266) (32,1.159997614) (40,1.063265278)};
+\addplot[draw=none,forget plot,fill=genericRose,fill opacity=.14] fill between[of=g22q10 and g22q90];
+\addplot[color=genericRose,thick,mark=triangle*,mark size=1.7pt] coordinates {(12,2.192814713) (16,1.669846142) (24,1.281006098) (32,1.128047569) (40,1.046673818)};
+\nextgroupplot[title={Generic fixed support, $d=3$}]
+\addplot[draw=none,forget plot,name path=g30q10] coordinates {(12,1.917946322) (16,1.534200367) (24,1.22424788) (32,1.102425396) (40,1.037558317)};
+\addplot[draw=none,forget plot,name path=g30q90] coordinates {(12,2.581464008) (16,1.882230586) (24,1.358100847) (32,1.167875315) (40,1.061669732)};
+\addplot[draw=none,forget plot,fill=genericInk,fill opacity=.14] fill between[of=g30q10 and g30q90];
+\addplot[color=genericInk,thick,mark=*,mark size=1.7pt] coordinates {(12,2.196371808) (16,1.672395092) (24,1.286138536) (32,1.130469933) (40,1.047488442)};
+\addlegendentry{Dense Gaussian}
+\addplot[draw=none,forget plot,name path=g31q10] coordinates {(12,1.913427242) (16,1.51418245) (24,1.220561411) (32,1.101620682) (40,1.03696308)};
+\addplot[draw=none,forget plot,name path=g31q90] coordinates {(12,2.569896721) (16,1.876458767) (24,1.362073037) (32,1.160786412) (40,1.066585255)};
+\addplot[draw=none,forget plot,fill=genericBlue,fill opacity=.14] fill between[of=g31q10 and g31q90];
+\addplot[color=genericBlue,thick,mark=square*,mark size=1.7pt] coordinates {(12,2.236569608) (16,1.655112984) (24,1.294969486) (32,1.12868739) (40,1.047521501)};
+\addlegendentry{KR Gaussian}
+\addplot[draw=none,forget plot,name path=g32q10] coordinates {(12,1.909313385) (16,1.52909119) (24,1.234904093) (32,1.112487864) (40,1.044133018)};
+\addplot[draw=none,forget plot,name path=g32q90] coordinates {(12,2.572268227) (16,1.913756506) (24,1.39491896) (32,1.189840018) (40,1.083637049)};
+\addplot[draw=none,forget plot,fill=genericRose,fill opacity=.14] fill between[of=g32q10 and g32q90];
+\addplot[color=genericRose,thick,mark=triangle*,mark size=1.7pt] coordinates {(12,2.226354765) (16,1.702712667) (24,1.303544412) (32,1.140141136) (40,1.059837652)};
+\addlegendentry{KR Rademacher}
+\end{groupplot}\end{tikzpicture}\endgroup
+\caption{Approximation on two fixed generic supports, with no exact Gaussian range law assumed. Each input is $A=\Sigma V^\top$, where $V\in\mathbb R^{64\times48}$ is a fixed orthonormal Gaussian-QR basis drawn independently of the probes. The first eight singular values are one and the remaining forty are $1/\sqrt{40}$, so $\tau_8(A)=1$ and zero output has ratio nine. Mode dimensions are $8\times8$ and $4\times4\times4$. Lines are medians and bands are empirical 10--90\% quantiles from 128 trials per law and order. Widths are nested within each trial; the three laws use independent streams.}
+\label{fig:generic-approximation}
+\end{figure}

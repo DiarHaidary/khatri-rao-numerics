@@ -1,0 +1,30 @@
+% Uses graphicx; the PDF is vector artwork with embedded fonts.
+% The manuscript can copy this figure block and adjust the path as necessary.
+\begin{figure}[t]
+ \centering
+ \includegraphics[width=\linewidth]{numerics/kr_embedding_distortion.pdf}
+ \caption{Finite-size distortion of Gaussian tensor sketches for two
+ geometries, each represented by one fixed rank-$8$ subspace at each
+ tensor order $d=2$ and $d=3$, with mode dimension
+ $n=8$ (ambient dimensions $N=64$ and $N=512$, respectively).
+ For an orthonormal basis $U$ and the normalized sketch $\Omega$, distortion is
+ $\|U^\top\Omega\Omega^\top U-I_8\|_2$.
+ The common-factor subspace is
+ $\operatorname{span}\{e_a\otimes e_1\otimes\cdots\otimes e_1:1\le a\le8\}$;
+ the second subspace is one independent Haar-distributed subspace fixed
+ throughout the experiment for each tensor order.
+ Lines show medians and shading shows empirical $10$th--$90$th percentiles
+ over $64$ independent probe trials; widths within a trial are nested
+ prefixes and both geometries share the same Gaussian factor draws.
+ The dashed horizontal line is $\varepsilon=0.5$.
+ The lower logarithmic strips mark the sampled width range and the
+ sufficient closed-certificate widths $m_{\mathrm{cert}}=33\,968$ and
+ $489\,430$, computed at $\delta=0.1$, $\Ksg^2=8/3$, and
+ $q=\lceil\log(4r/\delta)\rceil=6$ without fitted constants.
+ These certificate widths were not simulated.
+ The experiment illustrates geometry at fixed rank and the conservatism
+ of this sufficient certificate; it does not establish the asymptotic
+ $r\log^{d-1}r$ dimension dependence.
+ Seed: $20261007$.}
+ \label{fig:kr-numerical-distortion}
+\end{figure}

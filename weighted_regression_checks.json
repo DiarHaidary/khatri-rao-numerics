@@ -1,0 +1,7 @@
+{
+  "seed": 2026100902,
+  "draws": 96,
+  "max_relative_error_identity_error": 4.529709940470639e-14,
+  "max_conditional_covariance_identity_error": 2.609024107869118e-14,
+  "min_weight_cap_covariance_slack": 0.0022622887004415484
+}

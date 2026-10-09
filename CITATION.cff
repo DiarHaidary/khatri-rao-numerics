@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying manuscript when using these experiments."
+title: "Khatri-Rao sketching numerics"
+authors:
+  - family-names: Heidary
+    given-names: Diar
+date-released: 2026-10-09
+type: software
+repository-code: "https://github.com/DiarHaidary/khatri-rao-numerics"

@@ -1,0 +1,52 @@
+{
+  "seed": 2026100703,
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "matplotlib": "3.11.2",
+  "spectrum_r": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    256,
+    512,
+    1024,
+    2048
+  ],
+  "spectrum_trials": {
+    "8": 96,
+    "16": 96,
+    "32": 96,
+    "64": 96,
+    "128": 96,
+    "256": 96,
+    "512": 96,
+    "1024": 64,
+    "2048": 32
+  },
+  "approximation_trials": {
+    "8": 64,
+    "16": 64,
+    "32": 64,
+    "64": 64,
+    "128": 64,
+    "256": 64,
+    "512": 32
+  },
+  "approximation_R": "2m",
+  "tail_squared_Frobenius_norm": 1,
+  "checks": {
+    "explicit_tensor_max_error": 8.881784197001252e-16,
+    "rankr_formula_vs_svd_error": 1.5543122344752192e-15,
+    "max_coupled_gaussian_QR_error_difference": 1.1368683772161603e-13,
+    "approximation_QR_diagnostics_count": 853,
+    "min_column_relative_R_diagonal": 0.03851500966881469,
+    "min_over_max_abs_R_diagonal": 4.209160398031705e-08,
+    "numerically_rank_deficient_QR_draws": 0
+  },
+  "simulation_seconds": 234.48068689999855,
+  "quantile_method": "NumPy linear",
+  "blas_threads": 1
+}

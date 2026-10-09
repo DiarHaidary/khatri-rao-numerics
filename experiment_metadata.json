@@ -1,0 +1,62 @@
+{
+  "seed": 20261007,
+  "rank": 8,
+  "mode_dimension": 8,
+  "orders": [
+    2,
+    3
+  ],
+  "trials_per_order": 64,
+  "m_grid": [
+    64,
+    128,
+    256,
+    512,
+    1024,
+    2048,
+    4096,
+    8192
+  ],
+  "epsilon": 0.5,
+  "delta": 0.1,
+  "subspace_rule": "One fixed independent Haar-distributed subspace for each order; common-factor span e_a tensor e_1 tensor ... tensor e_1.",
+  "probe_rule": "Independent standard normal coordinates across rows and modes; common and Haar geometries share probe draws within each trial; widths are nested prefixes.",
+  "distortion": "spectral norm of m^{-1} Y^T Y-I_r (squared-norm distortion)",
+  "quantile_rule": "NumPy linear empirical quantiles at 0.10, 0.50, 0.90; these are trial spread, not confidence intervals.",
+  "certificate_rule": "Manuscript explicit closed certificate, K^2=8/3, q=ceil(log(4r/delta)); no q optimization or fitted constants.",
+  "numpy_version": "2.5.3",
+  "matplotlib_version": "3.11.2",
+  "verification": {
+    "projection_max_abs_error": 0.0,
+    "common_projection_max_abs_error": 8.881784197001252e-16,
+    "distortion_max_abs_error": 2.220446049250313e-16,
+    "verified_orders": [
+      2,
+      3
+    ],
+    "small_n": 3,
+    "small_r": 3,
+    "small_m": 17
+  },
+  "subspace_checks": {
+    "2": {
+      "ambient_dimension": 64,
+      "orthogonality_error": 4.706225174756958e-16,
+      "basis_seed_entropy": [
+        20261007,
+        2,
+        0
+      ]
+    },
+    "3": {
+      "ambient_dimension": 512,
+      "orthogonality_error": 8.921768880820072e-16,
+      "basis_seed_entropy": [
+        20261007,
+        3,
+        0
+      ]
+    }
+  },
+  "simulation_seconds": 1.5945216000000073
+}

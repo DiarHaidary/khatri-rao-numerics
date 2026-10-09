@@ -1,0 +1,27 @@
+Computed results (all bands are empirical trial quantiles)
+Simulation runtime: 234.481 seconds
+Spectrum observations: 3072
+Approximation actual QR checks: 853
+Spectrum at largest rank, medians:
+  r=2048 d=0: lower=0.180238, upper=2.47709, maxweight=1, heuristic median relative error=46.18%
+  r=2048 d=2: lower=0.0630288, upper=6.33513, maxweight=15.1043, heuristic median relative error=4.93%
+  r=2048 d=3: lower=0.020909, upper=22.7699, maxweight=63.7039, heuristic median relative error=1.52%
+  r=2048 d=4: lower=0.00667909, upper=51.0907, maxweight=142.995, heuristic median relative error=2.048%
+Approximation at largest rank:
+  r=512 kind=0: rank-r median=1.29952, mean=1.2993634, projector median=0.89944191, zero=513
+  r=512 kind=-1: rank-r median=1.2992526, mean=1.2991712, projector median=0.89917456, zero=513
+All QR diagnostics:
+  min column-relative |Rjj|=0.03851501
+  min global |Rjj|/max |Rjj|=4.2091604e-08
+  numerical rank-deficient draws: 0
+  max Gaussian paired QR output difference=1.1368684e-13
+Median heuristic relative errors by rank (d3,d4):
+  r=8: 23.64%, 26%
+  r=16: 16.01%, 22.37%
+  r=32: 15.64%, 14.54%
+  r=64: 10.64%, 9.821%
+  r=128: 8.26%, 8.457%
+  r=256: 6.355%, 5.766%
+  r=512: 3.694%, 3.604%
+  r=1024: 3.841%, 3.07%
+  r=2048: 1.52%, 2.048%
