@@ -1,0 +1,100 @@
+{
+  "seed": 2026100905,
+  "trials": 128,
+  "rank": 32,
+  "sketch_size": 97,
+  "support_dimension": 194,
+  "common_mode_cases": [
+    [
+      16
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      16,
+      16
+    ],
+    [
+      32,
+      32
+    ],
+    [
+      2,
+      2,
+      4
+    ],
+    [
+      8,
+      8,
+      8
+    ]
+  ],
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "basis_info": [
+    {
+      "source": "head_tail/tail_basis_r32.npy",
+      "common_product": 16,
+      "shape": [
+        512,
+        162
+      ],
+      "orthogonality_error": 1.820491656571579e-15,
+      "sha256_float64_C": "b0347e6721931d6c045ba922d7b2c591b999a739a4fbb57529af7d2b2fe63446"
+    },
+    {
+      "source": "Gaussian QR",
+      "seed": 2026100905,
+      "spawn_key": [
+        0
+      ],
+      "common_product": 256,
+      "shape": [
+        8192,
+        162
+      ],
+      "orthogonality_error": 2.4803565778068252e-15,
+      "sha256_float64_C": "dfaa2a76f04f93ef6cb8deeac358c019db4ac759f97e9e22b04af6c32e1991e7"
+    },
+    {
+      "source": "Gaussian QR",
+      "seed": 2026100905,
+      "spawn_key": [
+        1
+      ],
+      "common_product": 512,
+      "shape": [
+        16384,
+        162
+      ],
+      "orthogonality_error": 2.6825217282450225e-15,
+      "sha256_float64_C": "94715c8881855c83fd063d7e1d91077d135b7c329c313f0f8ba7e0563dddfec2"
+    },
+    {
+      "source": "Gaussian QR",
+      "seed": 2026100905,
+      "spawn_key": [
+        2
+      ],
+      "common_product": 1024,
+      "shape": [
+        32768,
+        162
+      ],
+      "orthogonality_error": 3.3436302192303595e-15,
+      "sha256_float64_C": "c4cb9cdcba9511587692cc4b01f1fbcb3174abc6429fd02b5cb713f392136a98"
+    }
+  ],
+  "explicit_tensor_error": 0.0,
+  "compressed_svd_error": 1.0658141036401503e-14,
+  "head_difference_within_order": 0.0,
+  "gaussian_spherical_coupling_error": 5.828670879282072e-16,
+  "gaussian_spherical_approximation_difference": 7.105427357601002e-15,
+  "minimum_qr_rank_margin": 4.37978122848216e-05,
+  "seconds": 9.564314899998863,
+  "coupling": "A fixed tail basis per common-mode product. Nested common-factor Gaussian coordinates and the same first-mode draw are shared across cases within each trial. Cases have different ambient inputs; trials are independent.",
+  "interpretation": "Descriptive comparison on fixed inputs. Does not prove monotonicity in dimensions, a limiting error, or a universal head-to-tail ratio bound."
+}

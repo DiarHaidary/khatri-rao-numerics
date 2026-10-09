@@ -33,3 +33,8 @@ draw. The experiment intentionally uses a small practical sketch budget;
 it does not numerically verify the conservative sufficient constants
 of the fourth-moment theorem. Larger tensor orders can have median
 errors above 1.5 at this budget.
+
+Common-mode sizes matter: their product is 16 in every order here.
+See ../mode_sensitivity/README.md for an exact-product comparison with
+larger modes. The error medians appear to level off over the tested ranks;
+no limiting error or uniform bound in rank is established.

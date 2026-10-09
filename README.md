@@ -12,6 +12,7 @@ Reproducible code and data accompanying Diar Heidary's manuscript,
 | `generic_support/` | Delocalized generic-support approximation control |
 | `head_tail/` | Common-factor head with generic tail; ranks through 256 and ambient dimension through 4096 |
 | `regression_finite_size/` | Finite-sample check of asymptotic weighted-regression inflation |
+| `mode_sensitivity/` | Fixed-input comparison across common-mode sizes, with paired identical head sketches |
 | `weighted_regression_checks.py` | Independent numerical checks of the weighted regression identities |
 
 The folders include source, raw trials, summaries, fixed bases where applicable,
@@ -30,6 +31,7 @@ python separation/separation_experiment.py --output rerun_separation
 python generic_support/generic_approximation.py --output rerun_generic
 python head_tail/head_tail_experiment.py --output rerun_head_tail
 python regression_finite_size/regression_finite_size.py --output rerun_regression
+python mode_sensitivity/mode_sensitivity.py --output rerun_sensitivity
 python weighted_regression_checks.py
 ```
 
