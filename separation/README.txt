@@ -55,8 +55,13 @@ are empirical medians, including in the approximation panel.
 Each spectral row records lambda_min and lambda_max of GD^2G^T/m,
 max w_i, the heuristic 1+(r/m)max w_i, and the exact Rayleigh quotient
 in the heaviest-column direction. The Rayleigh quotient is an actual lower
-bound for lambda_max. The heuristic is not a rigorous bound. Dense spectral
-reference lines are the r/m -> 1/3 limits (1 +/- sqrt(1/3))^2;
+bound for lambda_max. The heuristic is not a rigorous bound. Its median
+relative error at r=8 is 23.64% for d=3 and 26.00% for d=4.
+Both are below 10% at every tested rank r>=128; this is not a uniform
+10% guarantee. Full values appear in spectrum_summary.csv and
+computed_summary.txt.
+
+Dense spectral reference lines are the r/m -> 1/3 limits (1 +/- sqrt(1/3))^2;
 they are neither finite-size deterministic bounds nor measured constants.
 
 Approximation uses R=2m>m and a diagonal input with singular values
@@ -78,7 +83,8 @@ Gaussian KR rows couple to the same full-support G and report exactly the
 same range-derived output, as guaranteed algebraically when every s_i!=0.
 One independently recomputed weighted QR per d and r checks floating-point
 agreement; the check flag distinguishes verified rows from copied algebraic
-couplings. The maximum check difference is reported in metadata.json.
+couplings. The maximum check difference is 1.1368683772161603e-13
+(below 1.2e-13), as recorded in metadata.json.
 No implication of
 identical floating-point conditioning for arbitrary ill-conditioned D is made.
 
@@ -100,14 +106,15 @@ in this particular diagonal instance; this is an observation, not a law.
 Validation
 ----------
 Explicit ambient tensor contraction agrees with the common-factor shortcut
-within8.88e-16 for d2,3,4. The rank-r error identity agrees with a direct SVD
-within1.55e-15. Paired weighted QR differences and total simulation runtime
+within 8.88e-16 for d2,3,4. The rank-r error identity agrees with a direct SVD
+within 1.55e-15. Paired weighted QR differences and total simulation runtime
 are recorded in metadata.json. The experiment uses single-threaded BLAS.
 For every actual QR, approximation_QR_diagnostics.csv records
 min_j |R_jj|/||Y_col_j||_2 and min_j |R_jj|/max_j |R_jj|.
 Both must exceed (R+m)*machine_epsilon before all m Q columns are used.
 This is a numerical rank diagnostic, not a condition-number theorem.
-All 853 actual factorizations, including independently recomputed weighted
+These checks validate the implementation, not the theorems or their
+asymptotic rates. All 853 actual factorizations, including independently recomputed weighted
 checks, must pass; report_results.py verifies this and the spectral Rayleigh
 lower bound against every observation.
 The final Matplotlib
