@@ -59,7 +59,7 @@ parts.append(r'\nextgroupplot[title={(d) Rank-$r$ approximation},ylabel={$\|A-\w
 for d,name in ((0,'Gaussian / KR Gaussian'),(-1,'Rademacher common factor')):
     curve([z for z in a if int(z['kind'])==d],'rankr_ratio',d,f'a{abs(d)}',name)
 parts.append(r'\addplot[sepReference,dashed,forget plot] coordinates {(8,1.5)(512,1.5)};'+'\n')
-parts.append(r'\node[anchor=south west,font=\scriptsize,text=sepReference] at (axis cs:8.5,1.506) {Gaussian expectation bound: $1.5$};'+'\n')
+parts.append(r'\node[anchor=north west,font=\scriptsize,text=sepReference,inner sep=0pt] at (axis cs:8.5,1.528) {Gaussian expectation bound: $1.5$};'+'\n')
 parts.append(r'\node[anchor=south west,font=\scriptsize] at (rel axis cs:.02,.02) {$\tau_r(A)=1$; zero-output ratio $=r+1$};'+'\n')
 parts.append(r'''\end{groupplot}
 \node[anchor=south] at ([yshift=1.05cm]group c1r1.north east) {\pgfplotslegendfromname{sepLegend}};

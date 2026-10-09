@@ -93,7 +93,7 @@ legend style={font=\scriptsize,draw=gray!25,fill=white},
 \addplot[color=sepOrange,thick,mark=square*,mark size=1.4pt] coordinates {(8,1.255094510840372) (16,1.277281285652315) (32,1.2877158767740349) (64,1.293873216430108) (128,1.2963720933547775) (256,1.2985717644462276) (512,1.2992526264292779)};
 \addlegendentry{Rademacher common factor}
 \addplot[sepReference,dashed,forget plot] coordinates {(8,1.5)(512,1.5)};
-\node[anchor=south west,font=\scriptsize,text=sepReference] at (axis cs:8.5,1.506) {Gaussian expectation bound: $1.5$};
+\node[anchor=north west,font=\scriptsize,text=sepReference,inner sep=0pt] at (axis cs:8.5,1.528) {Gaussian expectation bound: $1.5$};
 \node[anchor=south west,font=\scriptsize] at (rel axis cs:.02,.02) {$\tau_r(A)=1$; zero-output ratio $=r+1$};
 \end{groupplot}
 \node[anchor=south] at ([yshift=1.05cm]group c1r1.north east) {\pgfplotslegendfromname{sepLegend}};

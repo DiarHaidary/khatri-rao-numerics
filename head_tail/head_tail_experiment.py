@@ -132,6 +132,7 @@ def plot(out,summary):
     axes[0].axhline((1+1/np.sqrt(3))**2,color=COLORS[0],ls='--',lw=1)
     axes[1].set(title='Same input: rank-r approximation',ylabel='Squared error / optimal tail')
     axes[1].axhline(1.5,color=COLORS[0],ls='--',lw=1)
+    for ax in axes: ax.yaxis.labelpad=1
     axes[0].legend(frameon=False,fontsize=8)
     fig.tight_layout(); fig.savefig(out/'head_tail.pdf',bbox_inches='tight'); fig.savefig(out/'head_tail.png',dpi=190,bbox_inches='tight'); plt.close(fig)
 
@@ -139,7 +140,7 @@ def inline(out,summary):
     colors={0:'htInk',2:'htBlue',3:'htRose',4:'htViolet'}
     marks={0:'*',2:'square*',3:'triangle*',4:'diamond*'}
     lines=[r'\begin{figure}[!t]',r'\centering\begingroup',r'\definecolor{htInk}{HTML}{29234F}',r'\definecolor{htBlue}{HTML}{00B9D8}',r'\definecolor{htRose}{HTML}{254BE8}',r'\definecolor{htViolet}{HTML}{EA5CB5}',r'\begin{tikzpicture}',
-           r'\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.65cm},width=.38\linewidth,height=4.4cm,scale only axis,xmode=log,log basis x=2,xtick={8,16,32,64,128,256},xticklabels={8,16,32,64,128,256},xlabel={Target rank $r$ ($m=3r+1$)},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=gray!25},legend columns=4]']
+           r'\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.65cm},width=.38\linewidth,height=4.4cm,scale only axis,xmode=log,log basis x=2,xtick={8,16,32,64,128,256},xticklabels={8,16,32,64,128,256},xlabel={Target rank $r$ ($m=3r+1$)},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},ylabel style={xshift=6pt},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=gray!25},legend columns=4]']
     for panel,key in enumerate(['lambda_max','rankr_ratio']):
         lines.append(r'\nextgroupplot[title={' + ('(a) Common-factor head' if panel==0 else '(b) Same input: approximation')+'},ylabel={'+(r'$\lambda_{\max}$ of head Gram' if panel==0 else r'$\|A-\widehat A_r\|_F^2/\tau_r(A)$')+'}'+(',ymode=log,legend to name=htLegend' if panel==0 else '')+']')
         for d in [0,2,3,4]:

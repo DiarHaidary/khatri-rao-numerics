@@ -203,7 +203,7 @@ def plot(out):
     curve(axs[1,1],dense,'rankr_ratio',COLORS[0],'Gaussian / KR Gaussian','o')
     curve(axs[1,1],sign,'rankr_ratio','#FF925B','Rademacher common factor','s')
     axs[1,1].axhline(1.5,color='#7042DF',linestyle='--',linewidth=1.1)
-    axs[1,1].text(.03,.995,'Gaussian expectation bound: 1.5',transform=axs[1,1].transAxes,va='top',fontsize=8,color='#7042DF')
+    axs[1,1].text(.03,.97,'Gaussian expectation bound: 1.5',transform=axs[1,1].transAxes,va='top',fontsize=8,color='#7042DF')
     axs[1,1].text(.03,.07,r'$\tau_r(A)=1$; zero-output ratio $=r+1$',transform=axs[1,1].transAxes,fontsize=8)
     axs[1,1].set(title='(d) Rank-r approximation',ylabel=r'$\|A-\widehat A_r\|_F^2\,/\,\tau_r(A)$',ylim=(1.16,1.54),xlim=(7,570))
     axs[1,1].set_xticks(list(APPROX_COUNTS)); axs[1,1].set_xticklabels(list(APPROX_COUNTS))
