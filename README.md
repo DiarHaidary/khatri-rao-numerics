@@ -1,7 +1,7 @@
 # Khatri-Rao sketching numerics
 
 Reproducible code and data accompanying Diar Heidary's manuscript,
-*The Exact Logarithmic Cost of Khatri-Rao Subspace Embeddings*.
+*The Sharp Logarithmic Cost of Khatri-Rao Subspace Embeddings*.
 
 ## Experiments
 
