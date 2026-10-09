@@ -21,7 +21,7 @@ SEED = 2026100703
 RS = [8, 16, 32, 64, 128, 256, 512, 1024, 2048]
 SPECTRUM_COUNTS = {r: 96 if r<=512 else (64 if r==1024 else 32) for r in RS}
 APPROX_COUNTS = {8:64,16:64,32:64,64:64,128:64,256:64,512:32}
-COLORS = {0: '#2F3034', 2: '#254BE8', 3: '#EA5CB5', 4: '#7042DF'}
+COLORS = {0: '#29234F', 2: '#00B9D8', 3: '#254BE8', 4: '#EA5CB5'}
 MARKERS = {0:'o', 2:'s', 3:'^', 4:'D'}
 LABELS = {0: 'Dense Gaussian', 2: 'KR, d=2', 3: 'KR, d=3', 4: 'KR, d=4'}
 
@@ -181,7 +181,7 @@ def plot(out):
         ax.set_xlabel('Target rank r (m = 3r + 1)')
     def curve(ax,rows,key,color,label,marker='o'):
         x=[z['r'] for z in rows]; med=[z[key+'_q50'] for z in rows]
-        ax.fill_between(x,[z[key+'_q10'] for z in rows],[z[key+'_q90'] for z in rows],color=color,alpha=.14,linewidth=0)
+        ax.fill_between(x,[z[key+'_q10'] for z in rows],[z[key+'_q90'] for z in rows],color=color,alpha=.20,linewidth=0)
         ax.plot(x,med,color=color,marker=marker,markersize=3.5,linewidth=1.5,label=label)
     for d in (0,2,3,4):
         rows=[z for z in s if z['d']==d]
@@ -201,16 +201,16 @@ def plot(out):
     dense=[z for z in a if z['kind']==0]
     sign=[z for z in a if z['kind']==-1]
     curve(axs[1,1],dense,'rankr_ratio',COLORS[0],'Gaussian / KR Gaussian','o')
-    curve(axs[1,1],sign,'rankr_ratio','#00AFC7','Rademacher common factor','s')
-    axs[1,1].axhline(1.5,color='#EA5CB5',linestyle='--',linewidth=1.1)
-    axs[1,1].text(.03,.995,'Gaussian expectation bound: 1.5',transform=axs[1,1].transAxes,va='top',fontsize=8,color='#EA5CB5')
+    curve(axs[1,1],sign,'rankr_ratio','#FF925B','Rademacher common factor','s')
+    axs[1,1].axhline(1.5,color='#7042DF',linestyle='--',linewidth=1.1)
+    axs[1,1].text(.03,.995,'Gaussian expectation bound: 1.5',transform=axs[1,1].transAxes,va='top',fontsize=8,color='#7042DF')
     axs[1,1].text(.03,.07,r'$\tau_r(A)=1$; zero-output ratio $=r+1$',transform=axs[1,1].transAxes,fontsize=8)
     axs[1,1].set(title='(d) Rank-r approximation',ylabel=r'$\|A-\widehat A_r\|_F^2\,/\,\tau_r(A)$',ylim=(1.16,1.54),xlim=(7,570))
     axs[1,1].set_xticks(list(APPROX_COUNTS)); axs[1,1].set_xticklabels(list(APPROX_COUNTS))
     axs[1,1].legend(loc='center right',fontsize=7.8,frameon=True,facecolor='white',edgecolor='#DDDDDD')
     handles,labels=axs[0,1].get_legend_handles_labels()
     fig.legend(handles,labels,loc='upper center',bbox_to_anchor=(.5,1.01),ncol=4,frameon=False)
-    fig.text(.5,.005,'Lines: empirical medians; shading: trial 10%-90% quantiles (not confidence intervals).',ha='center',fontsize=8,color='#2F3034')
+    fig.text(.5,.005,'Lines: empirical medians; shading: trial 10%-90% quantiles (not confidence intervals).',ha='center',fontsize=8,color='#29234F')
     fig.tight_layout(rect=(0,.025,1,.965),h_pad=1.6,w_pad=3.2)
     fig.savefig(out/'kr_separation.pdf',bbox_inches='tight')
     fig.savefig(out/'kr_separation.png',dpi=200,bbox_inches='tight')

@@ -1,0 +1,19 @@
+{
+  "seed": 2026100904,
+  "rank": 10,
+  "sketch_size": 300,
+  "trials": 4000,
+  "orders": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "seconds": 1.4131196999987878,
+  "estimator": "Rao-Blackwellized: tr(C_m), exact conditional expected excess, averaged over independent weight/design draws.",
+  "normalization": "Divide estimated excess by r E[w^2]/m. This denominator is an asymptotic reference, not an exact mean formula.",
+  "dense_exact_normalized_expectation": 1.0380622837370241,
+  "uncertainty": "Reported standard errors are Monte Carlo standard errors, not convergence-rate guarantees."
+}

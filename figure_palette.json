@@ -1,0 +1,10 @@
+{
+  "dense_gaussian": "#29234F",
+  "kr_order_2": "#00B9D8",
+  "kr_order_3": "#254BE8",
+  "kr_order_4": "#EA5CB5",
+  "rademacher_comparison": "#FF925B",
+  "reference_line": "#7042DF",
+  "band_opacity": 0.2,
+  "reference": "User-supplied palette, 9 October 2026. Distinct markers are retained."
+}

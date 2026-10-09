@@ -107,3 +107,7 @@ orthogonality error below 1e-12. In the local run, generation and numerical
 analysis took about 1.6 seconds; plot export adds a few seconds. See metadata
 for the measured time of the final run. The final vector PDF was rendered
 with Poppler and visually inspected; all labels, bands, and markers are legible.
+
+Notation note (9 October 2026): the manuscript now denotes the shifted
+moment radius by fraktur r_q. Historical code variable and CSV field rho
+retain the same numerical meaning.

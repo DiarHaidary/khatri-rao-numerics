@@ -22,7 +22,7 @@ SEED = 2026100901
 RANK, SUPPORT = 8, 48
 WIDTHS = [12, 16, 24, 32, 40]
 LAWS = ['Dense Gaussian', 'KR Gaussian', 'KR Rademacher']
-COLORS = ['#2F3034', '#254BE8', '#EA5CB5']
+COLORS = ['#29234F', '#254BE8', '#FF925B']
 MARKERS = ['o', 's', '^']
 
 def product_rows(factors):
@@ -128,7 +128,7 @@ def plot(out, summaries):
     for ax, d in zip(axes, [2,3]):
         for law, color, marker in zip(LAWS, COLORS, MARKERS):
             group=[x for x in summaries if x['d']==d and x['law']==law]
-            ax.fill_between(WIDTHS,[x['rankr_ratio_q10'] for x in group],[x['rankr_ratio_q90'] for x in group],color=color,alpha=.14,linewidth=0)
+            ax.fill_between(WIDTHS,[x['rankr_ratio_q10'] for x in group],[x['rankr_ratio_q90'] for x in group],color=color,alpha=.20,linewidth=0)
             ax.plot(WIDTHS,[x['rankr_ratio_q50'] for x in group],color=color,marker=marker,lw=1.8,label=law)
         ax.set(title=f'Generic fixed support, d = {d}',xlabel='Sketch size m',xticks=WIDTHS)
         ax.grid(alpha=.2)
@@ -144,8 +144,8 @@ def inline(out, summaries, trials):
     colors = ['genericInk','genericBlue','genericRose']
     marks = ['*','square*','triangle*']
     lines=[r'\begin{figure}[H]',r'\centering\begingroup',
-           r'\definecolor{genericInk}{HTML}{2F3034}',r'\definecolor{genericBlue}{HTML}{254BE8}',
-           r'\definecolor{genericRose}{HTML}{EA5CB5}',r'\begin{tikzpicture}',
+           r'\definecolor{genericInk}{HTML}{29234F}',r'\definecolor{genericBlue}{HTML}{254BE8}',
+           r'\definecolor{genericRose}{HTML}{FF925B}',r'\begin{tikzpicture}',
            r'\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.55cm},width=.39\linewidth,height=4.2cm,scale only axis,xlabel={Sketch size $m$},xtick={12,16,24,32,40},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=none,at={(.97,.97)},anchor=north east}]']
     for d in [2,3]:
         extra=r',ylabel={$\|A-\widehat A_8\|_F^2/\tau_8(A)$}' if d==2 else ''
@@ -156,7 +156,7 @@ def inline(out, summaries, trials):
                 return ' '.join(f"({x['m']},{x['rankr_ratio_'+k]:.10g})" for x in group)
             for q in ['q10','q90']:
                 lines.append(r'\addplot[draw=none,forget plot,name path=g'+f'{d}{li}{q}'+'] coordinates {'+coords(q)+'};')
-            lines.append(r'\addplot[draw=none,forget plot,fill='+color+r',fill opacity=.14] fill between[of=g'+f'{d}{li}q10 and g{d}{li}q90'+'];')
+            lines.append(r'\addplot[draw=none,forget plot,fill='+color+r',fill opacity=.20] fill between[of=g'+f'{d}{li}q10 and g{d}{li}q90'+'];')
             lines.append(r'\addplot[color='+color+',thick,mark='+mark+',mark size=1.7pt] coordinates {'+coords('q50')+'};')
             if d==3:
                 lines.append(r'\addlegendentry{'+law+'}')

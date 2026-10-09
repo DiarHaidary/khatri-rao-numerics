@@ -188,7 +188,7 @@ def plot(summary, certificates, metadata, output):
                          "legend.fontsize": 8.5, "pdf.fonttype": 42, "ps.fonttype": 42})
     fig = plt.figure(figsize=(7.25, 4.7))
     gs = fig.add_gridspec(2, 2, height_ratios=[4.1, 0.75], hspace=0.46, wspace=0.15)
-    colors = {"common_factor": "#B65320", "haar": "#245EA6"}
+    colors = {"common_factor": "#EA5CB5", "haar": "#254BE8"}
     labels = {"common_factor": "Common factor", "haar": "Haar subspace"}
     main_axes = []
     for col, d in enumerate((2, 3)):
@@ -199,7 +199,7 @@ def plot(summary, certificates, metadata, output):
             x = np.array([row["m"] for row in rows])
             y = np.array([row["median"] for row in rows])
             ax.fill_between(x, [row["q10"] for row in rows], [row["q90"] for row in rows],
-                            color=colors[geometry], alpha=0.18, linewidth=0)
+                            color=colors[geometry], alpha=0.20, linewidth=0)
             ax.plot(x, y, "o-", color=colors[geometry], markersize=3.5, linewidth=1.5,
                     label=labels[geometry])
         ax.axhline(metadata["epsilon"], color="#565656", linestyle="--", linewidth=1,

@@ -7,7 +7,7 @@ def read(name):
     with (root/name).open(newline='',encoding='utf-8') as f: return list(csv.DictReader(f))
 s=read('spectrum_summary.csv'); a=read('approximation_summary.csv')
 def coord(rows,key): return ' '.join(f"({z['r']},{z[key]})" for z in rows)
-colors={0:'sepGray',2:'sepTeal',3:'sepPurple',4:'sepGreen',-1:'sepAmber'}
+colors={0:'sepNavy',2:'sepCyan',3:'sepBlue',4:'sepPink',-1:'sepOrange'}
 markers={0:'*',2:'square*',3:'triangle*',4:'diamond*',-1:'square*'}
 names={0:'Dense Gaussian',2:'KR, $d=2$',3:'KR, $d=3$',4:'KR, $d=4$'}
 parts=[r'''% Generated from summary CSVs by build_inline.py; no external data required.
@@ -16,11 +16,12 @@ parts=[r'''% Generated from summary CSVs by build_inline.py; no external data re
 \begin{figure}[t]
 \centering
 \begingroup
-\definecolor{sepGray}{HTML}{2F3034}
-\definecolor{sepTeal}{HTML}{254BE8}
-\definecolor{sepPurple}{HTML}{EA5CB5}
-\definecolor{sepGreen}{HTML}{7042DF}
-\definecolor{sepAmber}{HTML}{00AFC7}
+\definecolor{sepNavy}{HTML}{29234F}
+\definecolor{sepCyan}{HTML}{00B9D8}
+\definecolor{sepBlue}{HTML}{254BE8}
+\definecolor{sepPink}{HTML}{EA5CB5}
+\definecolor{sepOrange}{HTML}{FF925B}
+\definecolor{sepReference}{HTML}{7042DF}
 \begin{tikzpicture}
 \begin{groupplot}[
 group style={group size=2 by 2,horizontal sep=2.10cm,vertical sep=2.05cm},
@@ -37,7 +38,7 @@ def curve(rows,key,d,prefix,legend=None):
     color=colors[d]
     for p in (10,90):
         parts.append(f"\\addplot[draw=none,name path={prefix}{p},forget plot] coordinates {{{coord(rows,key+'_q'+str(p))}}};\n")
-    parts.append(f"\\addplot[draw=none,fill={color},fill opacity=.14,forget plot] fill between[of={prefix}10 and {prefix}90];\n")
+    parts.append(f"\\addplot[draw=none,fill={color},fill opacity=.20,forget plot] fill between[of={prefix}10 and {prefix}90];\n")
     parts.append(f"\\addplot[color={color},thick,mark={markers[d]},mark size=1.4pt] coordinates {{{coord(rows,key+'_q50')}}};\n")
     if legend: parts.append('\\addlegendentry{'+legend+'}\n')
     else: parts[-1]=parts[-1].replace('mark size=1.4pt]','mark size=1.4pt,forget plot]')
@@ -48,17 +49,17 @@ for d in (0,2,3,4):
     rows=[z for z in s if int(z['d'])==d]
     curve(rows,'lambda_max',d,f'u{d}',names[d])
     if d: parts.append(f"\\addplot[color={colors[d]},dotted,thick,forget plot] coordinates {{{coord(rows,'heavy_heuristic_q50')}}};\n")
-parts.append(r'\addplot[sepGray,dashed,forget plot] coordinates {(8,2.488033871712585)(2048,2.488033871712585)};'+'\n')
+parts.append(r'\addplot[sepNavy,dashed,forget plot] coordinates {(8,2.488033871712585)(2048,2.488033871712585)};'+'\n')
 parts.append(r'\node[anchor=north west,font=\scriptsize] at (rel axis cs:0.02,.97) {Dotted: heavy-column heuristic};'+'\n')
 parts.append(r'\nextgroupplot[title={(c) Lower spectral edge},ymode=log,ylabel={$\lambda_{\min}$}]'+'\n')
 for d in (0,2,3,4): curve([z for z in s if int(z['d'])==d],'lambda_min',d,f'l{d}')
-parts.append(r'\addplot[sepGray,dashed,forget plot] coordinates {(8,.1786327949540818)(2048,.1786327949540818)};'+'\n')
+parts.append(r'\addplot[sepNavy,dashed,forget plot] coordinates {(8,.1786327949540818)(2048,.1786327949540818)};'+'\n')
 parts.append(r'\node[anchor=north east,font=\scriptsize] at (rel axis cs:.98,.97) {Dashed: asymptotic dense edge};'+'\n')
 parts.append(r'\nextgroupplot[title={(d) Rank-$r$ approximation},ylabel={$\|A-\widehat A_r\|_F^2/\tau_r(A)$},ymin=1.16,ymax=1.54,xmax=570,xtick={8,16,32,64,128,256,512},xticklabels={8,16,32,64,128,256,512},legend style={at={(.98,.5)},anchor=east}]'+'\n')
 for d,name in ((0,'Gaussian / KR Gaussian'),(-1,'Rademacher common factor')):
     curve([z for z in a if int(z['kind'])==d],'rankr_ratio',d,f'a{abs(d)}',name)
-parts.append(r'\addplot[sepPurple,dashed,forget plot] coordinates {(8,1.5)(512,1.5)};'+'\n')
-parts.append(r'\node[anchor=south west,font=\scriptsize,text=sepPurple] at (axis cs:8.5,1.506) {Gaussian expectation bound: $1.5$};'+'\n')
+parts.append(r'\addplot[sepReference,dashed,forget plot] coordinates {(8,1.5)(512,1.5)};'+'\n')
+parts.append(r'\node[anchor=south west,font=\scriptsize,text=sepReference] at (axis cs:8.5,1.506) {Gaussian expectation bound: $1.5$};'+'\n')
 parts.append(r'\node[anchor=south west,font=\scriptsize] at (rel axis cs:.02,.02) {$\tau_r(A)=1$; zero-output ratio $=r+1$};'+'\n')
 parts.append(r'''\end{groupplot}
 \node[anchor=south] at ([yshift=1.05cm]group c1r1.north east) {\pgfplotslegendfromname{sepLegend}};

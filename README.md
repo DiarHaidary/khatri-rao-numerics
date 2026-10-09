@@ -9,7 +9,9 @@ Reproducible code and data accompanying Diar Heidary's manuscript,
 | --- | --- |
 | Repository root | Fixed-rank common-factor versus generic Haar embedding distortion |
 | `separation/` | Spectral extremes and rank-r approximation at m = 3r + 1 |
-| `generic_support/` | Approximation on fixed generic supports beyond the exact common-factor law |
+| `generic_support/` | Delocalized generic-support approximation control |
+| `head_tail/` | Common-factor head with generic tail; ranks through 256 and ambient dimension through 4096 |
+| `regression_finite_size/` | Finite-sample check of asymptotic weighted-regression inflation |
 | `weighted_regression_checks.py` | Independent numerical checks of the weighted regression identities |
 
 The folders include source, raw trials, summaries, fixed bases where applicable,
@@ -26,6 +28,8 @@ python -m pip install -r requirements.txt
 python kr_embedding_experiment.py --output rerun_embedding
 python separation/separation_experiment.py --output rerun_separation
 python generic_support/generic_approximation.py --output rerun_generic
+python head_tail/head_tail_experiment.py --output rerun_head_tail
+python regression_finite_size/regression_finite_size.py --output rerun_regression
 python weighted_regression_checks.py
 ```
 
@@ -48,3 +52,20 @@ and adds the generic-support experiment. The original simulation data remain
 unchanged. SHA256SUMS.txt records the files included in this snapshot.
 
 Public repository: https://github.com/DiarHaidary/khatri-rao-numerics
+
+## Second manuscript revision (9 October 2026)
+
+The main numerical comparison beyond the exact law now uses `head_tail/`.
+The earlier `generic_support/` experiment is retained as a delocalized control.
+The common-factor experiment and the new head/tail experiment share the
+reference palette in `figure_palette.json`: navy, cyan, blue, and pink.
+Trial bands use opacity 0.20, with distinct markers on the median curves.
+`regression_finite_size/` includes independently generated values supporting
+the manuscript's finite-sample caveat.
+
+## License
+
+Code is released under the MIT License. Numerical data, metadata, figures,
+LaTeX figure fragments, and explanatory documentation are released under
+Creative Commons Attribution 4.0 International. See [license scope](LICENSING.md),
+[MIT terms](LICENSE), and [CC BY 4.0 terms](LICENSE-DATA.txt).

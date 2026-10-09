@@ -1,0 +1,54 @@
+{
+  "seed": 2026100903,
+  "rank_values": [
+    8,
+    16,
+    32,
+    64,
+    128,
+    256
+  ],
+  "counts": {
+    "8": 128,
+    "16": 128,
+    "32": 128,
+    "64": 128,
+    "128": 96,
+    "256": 64
+  },
+  "common_mode_dimensions": {
+    "2": [
+      16
+    ],
+    "3": [
+      4,
+      4
+    ],
+    "4": [
+      2,
+      2,
+      4
+    ]
+  },
+  "ambient_multiplier": 16,
+  "support_dimension": "2m",
+  "sketch_size": "3r+1",
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "matplotlib": "3.11.2",
+  "basis_orthogonality_errors": [
+    1.2371293144037343e-15,
+    1.4371743810678935e-15,
+    1.820491656571579e-15,
+    1.7867545382191702e-15,
+    2.135229155446061e-15,
+    2.6430532161908447e-15
+  ],
+  "explicit_tensor_error": 0.0,
+  "direct_compressed_svd_error": 3.863576125695545e-14,
+  "smallest_qr_rank_margin": 8.178530311237483e-06,
+  "seconds": 71.35371740000119,
+  "coupling": "One fixed tail basis per rank shared across orders. All laws share the first-mode Gaussian draw within each trial. Other factors and the dense tail are independent. Ranks use independent streams.",
+  "interpretation": "Finite-size observations, not a theorem probability. Quantile bands are trial distributions, not confidence intervals."
+}
