@@ -1,0 +1,69 @@
+{
+  "seed": 2026100907,
+  "rank": 32,
+  "ambient_dimension": 16384,
+  "support_dimension": 480,
+  "common_product": 512,
+  "common_mode_dimensions": {
+    "2": [
+      512
+    ],
+    "3": [
+      16,
+      32
+    ],
+    "4": [
+      8,
+      8,
+      8
+    ]
+  },
+  "widths": [
+    48,
+    64,
+    96,
+    128,
+    192,
+    256,
+    384
+  ],
+  "ratios": [
+    1.5,
+    2,
+    3,
+    4,
+    6,
+    8,
+    12
+  ],
+  "trials": 96,
+  "basis_shape": [
+    16352,
+    448
+  ],
+  "basis_seed_spawn_key": [
+    0
+  ],
+  "basis_sha256_compact_C": "92a7e01d47c4679f11e3564ce20cc6740d6c2d68c86e9b1249ce1f7ceff7aba4",
+  "basis_gram_max_error": 2.886579864025407e-15,
+  "validation": {
+    "haar_vs_scipy_qr_error": 0.0,
+    "blocked_contraction_error": 3.552713678800501e-15,
+    "compressed_svd_error": 4.218847493575595e-15,
+    "tail_cholesky_diagonal_ratio": 0.5683707211634317,
+    "head_cholesky_diagonal_ratio": 0.28420632764722975,
+    "qr_error_difference": 4.440892098500626e-16,
+    "qr_rank_margin": 0.06874385528589758
+  },
+  "max_qr_error_difference": 2.1316282072803006e-14,
+  "minimum_tail_cholesky_ratio": 0.28811765971495895,
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "matplotlib": "3.11.2",
+  "seconds": 119.54427919999944,
+  "blas_threads": 1,
+  "design": "One fixed Haar tail and the same two-level spectrum for every width and law. m is always below input rank 480. Prefixes nested within each trial and law; first-mode Gaussian matrix shared across laws.",
+  "interpretation": "Empirical medians and trial quantiles on one fixed input. Threshold crossings do not establish theorem-level sample complexity.",
+  "maximum_error_increase_across_nested_widths": -0.04807531412133326
+}

@@ -5,50 +5,50 @@
 \definecolor{htRose}{HTML}{254BE8}
 \definecolor{htViolet}{HTML}{EA5CB5}
 \begin{tikzpicture}
-\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.65cm},width=.38\linewidth,height=4.4cm,scale only axis,xmode=log,log basis x=2,xtick={8,16,32,64,128,256},xticklabels={8,16,32,64,128,256},xlabel={Target rank $r$ ($m=3r+1$)},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},ylabel style={xshift=6pt},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=gray!25},legend columns=4]
+\begin{groupplot}[group style={group size=1 by 2,vertical sep=1.9cm},width=.86\linewidth,height=4.3cm,scale only axis,xmode=log,log basis x=2,xtick={8,16,32,64,128,256,512,1024},xticklabels={8,16,32,64,128,256,512,1024},xlabel={Target rank $r$ ($m=3r+1$)},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},ylabel style={xshift=6pt},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=gray!25},legend columns=4]
 \nextgroupplot[title={(a) Common-factor head},ylabel={$\lambda_{\max}$ of head Gram},ymode=log,legend to name=htLegend]
-\addplot[draw=none,forget plot,name path=h00q10] coordinates {(8,1.70465407) (16,1.996432723) (32,2.181580452) (64,2.273207431) (128,2.366278341) (256,2.411419688)};
-\addplot[draw=none,forget plot,name path=h00q90] coordinates {(8,2.437049268) (16,2.492556458) (32,2.486886325) (64,2.488029994) (128,2.487045426) (256,2.493805089)};
+\addplot[draw=none,forget plot,name path=h00q10] coordinates {(8,1.70465407) (16,1.996432723) (32,2.181580452) (64,2.273207431) (128,2.366278341) (256,2.411419688) (512,2.438864655) (1024,2.458478593)};
+\addplot[draw=none,forget plot,name path=h00q90] coordinates {(8,2.437049268) (16,2.492556458) (32,2.486886325) (64,2.488029994) (128,2.487045426) (256,2.493805089) (512,2.486604775) (1024,2.489817227)};
 \addplot[draw=none,forget plot,fill=htInk,fill opacity=.20] fill between[of=h00q10 and h00q90];
-\addplot[color=htInk,thick,mark=*,mark size=1.7pt] coordinates {(8,2.077399503) (16,2.227716511) (32,2.322323904) (64,2.383383109) (128,2.425174399) (256,2.449625913)};
+\addplot[color=htInk,thick,mark=*,mark size=1.7pt] coordinates {(8,2.077399503) (16,2.227716511) (32,2.322323904) (64,2.383383109) (128,2.425174399) (256,2.449625913) (512,2.472051666) (1024,2.472212069)};
 \addlegendentry{Dense Gaussian}
-\addplot[draw=none,forget plot,name path=h02q10] coordinates {(8,1.645481157) (16,2.393106801) (32,3.022620392) (64,3.689385875) (128,4.223538097) (256,4.732427104)};
-\addplot[draw=none,forget plot,name path=h02q90] coordinates {(8,4.478077933) (16,5.093752148) (32,4.932588473) (64,5.443126526) (128,5.926277638) (256,6.207986113)};
+\addplot[draw=none,forget plot,name path=h02q10] coordinates {(8,1.645481157) (16,2.393106801) (32,3.022620392) (64,3.689385875) (128,4.223538097) (256,4.732427104) (512,5.013024161) (1024,5.439815423)};
+\addplot[draw=none,forget plot,name path=h02q90] coordinates {(8,4.478077933) (16,5.093752148) (32,4.932588473) (64,5.443126526) (128,5.926277638) (256,6.207986113) (512,6.633268014) (1024,6.777787395)};
 \addplot[draw=none,forget plot,fill=htBlue,fill opacity=.20] fill between[of=h02q10 and h02q90];
-\addplot[color=htBlue,thick,mark=square*,mark size=1.7pt] coordinates {(8,2.610587001) (16,3.478555581) (32,3.93219531) (64,4.474913993) (128,4.997603776) (256,5.333111509)};
+\addplot[color=htBlue,thick,mark=square*,mark size=1.7pt] coordinates {(8,2.610587001) (16,3.478555581) (32,3.93219531) (64,4.474913993) (128,4.997603776) (256,5.333111509) (512,5.677343955) (1024,5.879537155)};
 \addlegendentry{KR, $d=2$}
-\addplot[draw=none,forget plot,name path=h03q10] coordinates {(8,1.36120213) (16,2.431602983) (32,3.862613536) (64,5.135070666) (128,7.653805426) (256,9.424191851)};
-\addplot[draw=none,forget plot,name path=h03q90] coordinates {(8,7.558005132) (16,9.389661842) (32,13.76023258) (64,15.78109912) (128,16.34181142) (256,21.70059764)};
+\addplot[draw=none,forget plot,name path=h03q10] coordinates {(8,1.36120213) (16,2.431602983) (32,3.862613536) (64,5.135070666) (128,7.653805426) (256,9.424191851) (512,12.04444238) (1024,13.37678658)};
+\addplot[draw=none,forget plot,name path=h03q90] coordinates {(8,7.558005132) (16,9.389661842) (32,13.76023258) (64,15.78109912) (128,16.34181142) (256,21.70059764) (512,29.37575293) (1024,27.45602484)};
 \addplot[draw=none,forget plot,fill=htRose,fill opacity=.20] fill between[of=h03q10 and h03q90];
-\addplot[color=htRose,thick,mark=triangle*,mark size=1.7pt] coordinates {(8,2.916092602) (16,4.563932292) (32,6.459517109) (64,8.458781184) (128,10.5387871) (256,13.13388801)};
+\addplot[color=htRose,thick,mark=triangle*,mark size=1.7pt] coordinates {(8,2.916092602) (16,4.563932292) (32,6.459517109) (64,8.458781184) (128,10.5387871) (256,13.13388801) (512,15.72506454) (1024,18.3174569)};
 \addlegendentry{KR, $d=3$}
-\addplot[draw=none,forget plot,name path=h04q10] coordinates {(8,1.068170208) (16,2.115409077) (32,3.767957867) (64,6.279434496) (128,10.94302454) (256,15.15943675)};
-\addplot[draw=none,forget plot,name path=h04q90] coordinates {(8,8.746524992) (16,17.26886641) (32,23.18969726) (64,25.85976123) (128,41.10141942) (256,50.77888584)};
+\addplot[draw=none,forget plot,name path=h04q10] coordinates {(8,1.068170208) (16,2.115409077) (32,3.767957867) (64,6.279434496) (128,10.94302454) (256,15.15943675) (512,17.71210983) (1024,27.88589297)};
+\addplot[draw=none,forget plot,name path=h04q90] coordinates {(8,8.746524992) (16,17.26886641) (32,23.18969726) (64,25.85976123) (128,41.10141942) (256,50.77888584) (512,66.99484163) (1024,100.3803773)};
 \addplot[draw=none,forget plot,fill=htViolet,fill opacity=.20] fill between[of=h04q10 and h04q90];
-\addplot[color=htViolet,thick,mark=diamond*,mark size=1.7pt] coordinates {(8,3.197505334) (16,5.418357864) (32,8.274599642) (64,12.99044714) (128,20.63589918) (256,29.60067315)};
+\addplot[color=htViolet,thick,mark=diamond*,mark size=1.7pt] coordinates {(8,3.197505334) (16,5.418357864) (32,8.274599642) (64,12.99044714) (128,20.63589918) (256,29.60067315) (512,32.10568791) (1024,49.81591421)};
 \addlegendentry{KR, $d=4$}
-\addplot[htInk,dashed,forget plot] coordinates {(8,2.488033871712585)(256,2.488033871712585)};
+\addplot[htInk,dashed,forget plot] coordinates {(8,2.488033871712585)(1024,2.488033871712585)};
 \nextgroupplot[title={(b) Same input: approximation},ylabel={$\|A-\widehat A_r\|_F^2/\tau_r(A)$}]
-\addplot[draw=none,forget plot,name path=h10q10] coordinates {(8,1.208983704) (16,1.253059328) (32,1.273531492) (64,1.284717406) (128,1.29441211) (256,1.296617489)};
-\addplot[draw=none,forget plot,name path=h10q90] coordinates {(8,1.325272665) (16,1.330247469) (32,1.309480332) (64,1.303568437) (128,1.30270462) (256,1.301202123)};
+\addplot[draw=none,forget plot,name path=h10q10] coordinates {(8,1.208983704) (16,1.253059328) (32,1.273531492) (64,1.284717406) (128,1.29441211) (256,1.296617489) (512,1.298154927) (1024,1.299351516)};
+\addplot[draw=none,forget plot,name path=h10q90] coordinates {(8,1.325272665) (16,1.330247469) (32,1.309480332) (64,1.303568437) (128,1.30270462) (256,1.301202123) (512,1.300051924) (1024,1.300333535)};
 \addplot[draw=none,forget plot,fill=htInk,fill opacity=.20] fill between[of=h10q10 and h10q90];
-\addplot[color=htInk,thick,mark=*,mark size=1.7pt,forget plot] coordinates {(8,1.258472267) (16,1.287007051) (32,1.292103679) (64,1.294270275) (128,1.298417569) (256,1.299432648)};
-\addplot[draw=none,forget plot,name path=h12q10] coordinates {(8,1.256201931) (16,1.321152601) (32,1.386487686) (64,1.43059529) (128,1.462410632) (256,1.466256433)};
-\addplot[draw=none,forget plot,name path=h12q90] coordinates {(8,1.645645468) (16,1.636739619) (32,1.60664392) (64,1.575640565) (128,1.57239909) (256,1.554045572)};
+\addplot[color=htInk,thick,mark=*,mark size=1.7pt,forget plot] coordinates {(8,1.258472267) (16,1.287007051) (32,1.292103679) (64,1.294270275) (128,1.298417569) (256,1.299432648) (512,1.299423168) (1024,1.299716507)};
+\addplot[draw=none,forget plot,name path=h12q10] coordinates {(8,1.256201931) (16,1.321152601) (32,1.386487686) (64,1.43059529) (128,1.462410632) (256,1.466256433) (512,1.486503659) (1024,1.503807802)};
+\addplot[draw=none,forget plot,name path=h12q90] coordinates {(8,1.645645468) (16,1.636739619) (32,1.60664392) (64,1.575640565) (128,1.57239909) (256,1.554045572) (512,1.546628817) (1024,1.539581437)};
 \addplot[draw=none,forget plot,fill=htBlue,fill opacity=.20] fill between[of=h12q10 and h12q90];
-\addplot[color=htBlue,thick,mark=square*,mark size=1.7pt,forget plot] coordinates {(8,1.408974007) (16,1.453673459) (32,1.483921975) (64,1.489651323) (128,1.504168969) (256,1.504615725)};
-\addplot[draw=none,forget plot,name path=h13q10] coordinates {(8,1.301705687) (16,1.431774361) (32,1.549624573) (64,1.598349845) (128,1.661231558) (256,1.709339391)};
-\addplot[draw=none,forget plot,name path=h13q90] coordinates {(8,1.996383272) (16,2.062512655) (32,2.046559511) (64,1.945461573) (128,1.909327364) (256,1.900762894)};
+\addplot[color=htBlue,thick,mark=square*,mark size=1.7pt,forget plot] coordinates {(8,1.408974007) (16,1.453673459) (32,1.483921975) (64,1.489651323) (128,1.504168969) (256,1.504615725) (512,1.510060682) (1024,1.521898689)};
+\addplot[draw=none,forget plot,name path=h13q10] coordinates {(8,1.301705687) (16,1.431774361) (32,1.549624573) (64,1.598349845) (128,1.661231558) (256,1.709339391) (512,1.741648203) (1024,1.780166874)};
+\addplot[draw=none,forget plot,name path=h13q90] coordinates {(8,1.996383272) (16,2.062512655) (32,2.046559511) (64,1.945461573) (128,1.909327364) (256,1.900762894) (512,1.873055415) (1024,1.863101281)};
 \addplot[draw=none,forget plot,fill=htRose,fill opacity=.20] fill between[of=h13q10 and h13q90];
-\addplot[color=htRose,thick,mark=triangle*,mark size=1.7pt,forget plot] coordinates {(8,1.57285907) (16,1.682765084) (32,1.731598069) (64,1.754327837) (128,1.786320718) (256,1.798882564)};
-\addplot[draw=none,forget plot,name path=h14q10] coordinates {(8,1.334173086) (16,1.473040992) (32,1.621236767) (64,1.720072116) (128,1.80039841) (256,1.815081239)};
-\addplot[draw=none,forget plot,name path=h14q90] coordinates {(8,2.070471879) (16,2.397736204) (32,2.100747671) (64,2.179078517) (128,2.193842981) (256,2.08711893)};
+\addplot[color=htRose,thick,mark=triangle*,mark size=1.7pt,forget plot] coordinates {(8,1.57285907) (16,1.682765084) (32,1.731598069) (64,1.754327837) (128,1.786320718) (256,1.798882564) (512,1.790751141) (1024,1.805494834)};
+\addplot[draw=none,forget plot,name path=h14q10] coordinates {(8,1.334173086) (16,1.473040992) (32,1.621236767) (64,1.720072116) (128,1.80039841) (256,1.815081239) (512,1.878424627) (1024,1.893656612)};
+\addplot[draw=none,forget plot,name path=h14q90] coordinates {(8,2.070471879) (16,2.397736204) (32,2.100747671) (64,2.179078517) (128,2.193842981) (256,2.08711893) (512,2.055499458) (1024,2.000725614)};
 \addplot[draw=none,forget plot,fill=htViolet,fill opacity=.20] fill between[of=h14q10 and h14q90];
-\addplot[color=htViolet,thick,mark=diamond*,mark size=1.7pt,forget plot] coordinates {(8,1.613089984) (16,1.770945382) (32,1.848814657) (64,1.895841385) (128,1.956630211) (256,1.941483301)};
-\addplot[htInk,dashed,forget plot] coordinates {(8,1.5)(256,1.5)};
+\addplot[color=htViolet,thick,mark=diamond*,mark size=1.7pt,forget plot] coordinates {(8,1.613089984) (16,1.770945382) (32,1.848814657) (64,1.895841385) (128,1.956630211) (256,1.941483301) (512,1.977436322) (1024,1.947677282)};
+\addplot[htInk,dashed,forget plot] coordinates {(8,1.5)(1024,1.5)};
 \end{groupplot}
-\node[anchor=south] at ([yshift=.8cm]group c1r1.north east) {\pgfplotslegendfromname{htLegend}};
+\node[anchor=south] at ([yshift=.8cm]group c1r1.north) {\pgfplotslegendfromname{htLegend}};
 \end{tikzpicture}\endgroup
-\caption{A common-factor head with a generic orthogonal tail. The fixed input has ambient dimension $N=16r$ (up to 4096), support dimension $R=2m$, and $m=3r+1$. Its first $r$ right singular vectors form the Gaussian common-factor witness; the other $R-r$ vectors are a fixed Gaussian-QR basis in its orthogonal complement. Head singular values are one and tail singular values are $(R-r)^{-1/2}$, so $\tau_r(A)=1$ and zero output has ratio $r+1$. Mode dimensions are $(r,16)$, $(r,4,4)$, and $(r,2,2,4)$. The common-mode product is 16 in every order. Each rank uses one fixed input shared across all sketch laws, with 128 trials through $r=64$, 96 at $r=128$, and 64 at $r=256$. Lines are medians and bands are empirical 10--90\% quantiles. The left dashed line is the asymptotic dense upper edge; the right dashed line is the dense Gaussian expected-error bound of $1.5$. Neither is a finite-draw bound for the product sketches. Every range and error is computed separately; no exact output-law transfer is used.}
+\caption{A common-factor head with a generic orthogonal tail. Here $N=16r$ (up to 16384), $R=2m$, and $m=3r+1$. The first $r$ right singular vectors form the Gaussian common-factor witness; the other $R-r$ vectors are a fixed Gaussian-QR basis in its orthogonal complement. Head singular values are one and tail singular values are $(R-r)^{-1/2}$, so $\tau_r(A)=1$ and zero output has ratio $r+1$. Mode dimensions are $(r,16)$, $(r,4,4)$, and $(r,2,2,4)$; the common-mode product is 16 throughout. One fixed input per rank is shared across all laws, with 128 trials through $r=64$, 96 at $r=128$, 64 at $r=256$, and 32 each at $r=512,1024$. Lines are medians and bands are empirical 10--90\% quantiles. The dashed line in (a) is the asymptotic dense spectral edge; in (b), it is the dense Gaussian expected-error bound $1.5$. These are not finite-draw bounds for the product sketches. Every sketch and its error are evaluated separately, without an exact output-law transfer.}
 \label{fig:head-tail}
 \end{figure}

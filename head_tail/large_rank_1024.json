@@ -1,0 +1,70 @@
+{
+  "r": 1024,
+  "target_trials": 32,
+  "completed_trials": 32,
+  "seed": 2026100903,
+  "basis_seed_spawn_key": [
+    14
+  ],
+  "basis_shape": [
+    15360,
+    5122
+  ],
+  "basis_sha256_compact_C": "62a0b78cb2c0aa8232f96095a9c19a2f9058147f66e0f0c0d969f1e5be100dbb",
+  "sampled_64_column_orthogonality_error": 2.3314683517128287e-15,
+  "basis_storage": "Regenerated from seed; rows omit the head coordinates. Not stored as a large binary.",
+  "rng_states": [
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 29738239197501444262034603658379677889,
+        "inc": 204223485478751525365606722760620386971
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 220418321194644179822404221682200861144,
+        "inc": 300467222484904689158892769370893896925
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 38103337247524744604939000522233426329,
+        "inc": 291825364680166861945216927464401785777
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 234890682696691278088651743855478523851,
+        "inc": 51027489219557920886255657991730871579
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 337102329755685625354668317928039094003,
+        "inc": 278864178076943463227430451150978188367
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    }
+  ],
+  "seconds": 281.6993537999988,
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "blas_threads": 4,
+  "error_solver": "Exact Woodbury-Cholesky identity, with complete-column normalization. QR cross-check on dense and order-four trial zero.",
+  "note": "A blank qr_rank_margin means QR was not run for that draw; actual Cholesky diagnostics are in the accompanying diagnostics CSV."
+}

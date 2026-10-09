@@ -1,0 +1,35 @@
+\begin{figure}[H]
+\centering\begingroup
+\definecolor{osInk}{HTML}{29234F}
+\definecolor{osCyan}{HTML}{00B9D8}
+\definecolor{osBlue}{HTML}{254BE8}
+\definecolor{osPink}{HTML}{EA5CB5}
+\definecolor{osRef}{HTML}{7042DF}
+\begin{tikzpicture}
+\begin{axis}[width=.84\linewidth,height=5.3cm,scale only axis,xmode=log,log basis x=2,ymode=log,xtick={1.5,2,3,4,6,8,12},xticklabels={1.5,2,3,4,6,8,12},ytick={1,1.5,2,3,5,10,15},yticklabels={1,1.5,2,3,5,10,15},xlabel={Oversampling ratio $m/r$},ylabel={$\|A-\widehat A_r\|_F^2/\tau_r(A)$},ylabel style={xshift=6pt},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},legend style={font=\scriptsize,draw=none,at={(.97,.97)},anchor=north east}]
+\addplot[draw=none,forget plot,name path=os0q10] coordinates {(1.5,2.571692471) (2.0,1.82511465) (3.0,1.398504463) (4.0,1.24880543) (6.0,1.123680739) (8.0,1.069092813) (12.0,1.018555926)};
+\addplot[draw=none,forget plot,name path=os0q90] coordinates {(1.5,2.922202681) (2.0,1.962535584) (3.0,1.440318685) (4.0,1.269114189) (6.0,1.132509905) (8.0,1.074010654) (12.0,1.02029733)};
+\addplot[draw=none,forget plot,fill=osInk,fill opacity=.20] fill between[of=os0q10 and os0q90];
+\addplot[color=osInk,thick,mark=*,mark size=1.8pt] coordinates {(1.5,2.720500665) (2.0,1.894210246) (3.0,1.422861869) (4.0,1.259724803) (6.0,1.127613279) (8.0,1.071243153) (12.0,1.019446934)};
+\addlegendentry{Dense Gaussian}
+\addplot[draw=none,forget plot,name path=os2q10] coordinates {(1.5,4.482393387) (2.0,2.567791831) (3.0,1.603301478) (4.0,1.331467967) (6.0,1.147960154) (8.0,1.076726581) (12.0,1.020421123)};
+\addplot[draw=none,forget plot,name path=os2q90] coordinates {(1.5,6.406190227) (2.0,3.528803648) (3.0,1.90687513) (4.0,1.480463299) (6.0,1.193724635) (8.0,1.099563389) (12.0,1.025100017)};
+\addplot[draw=none,forget plot,fill=osCyan,fill opacity=.20] fill between[of=os2q10 and os2q90];
+\addplot[color=osCyan,thick,mark=square*,mark size=1.8pt] coordinates {(1.5,5.3197561) (2.0,3.048547764) (3.0,1.7313268) (4.0,1.397366508) (6.0,1.172515518) (8.0,1.089186414) (12.0,1.022482935)};
+\addlegendentry{KR, $d=2$}
+\addplot[draw=none,forget plot,name path=os3q10] coordinates {(1.5,6.672292165) (2.0,3.929141797) (3.0,2.080944147) (4.0,1.552085672) (6.0,1.220404631) (8.0,1.110005617) (12.0,1.025104701)};
+\addplot[draw=none,forget plot,name path=os3q90] coordinates {(1.5,10.74340693) (2.0,6.748553763) (3.0,3.133876435) (4.0,1.943980054) (6.0,1.331036468) (8.0,1.151584683) (12.0,1.034222074)};
+\addplot[draw=none,forget plot,fill=osBlue,fill opacity=.20] fill between[of=os3q10 and os3q90];
+\addplot[color=osBlue,thick,mark=triangle*,mark size=1.8pt] coordinates {(1.5,8.710843379) (2.0,5.21935386) (3.0,2.514573539) (4.0,1.736462615) (6.0,1.268737595) (8.0,1.128137401) (12.0,1.029375592)};
+\addlegendentry{KR, $d=3$}
+\addplot[draw=none,forget plot,name path=os4q10] coordinates {(1.5,9.695760654) (2.0,6.133284613) (3.0,2.831915313) (4.0,1.862150906) (6.0,1.311649466) (8.0,1.138684731) (12.0,1.030382302)};
+\addplot[draw=none,forget plot,name path=os4q90] coordinates {(1.5,14.24539872) (2.0,9.830280454) (3.0,4.674465483) (4.0,2.660676782) (6.0,1.534862431) (8.0,1.229421013) (12.0,1.045770628)};
+\addplot[draw=none,forget plot,fill=osPink,fill opacity=.20] fill between[of=os4q10 and os4q90];
+\addplot[color=osPink,thick,mark=diamond*,mark size=1.8pt] coordinates {(1.5,11.47330999) (2.0,7.521222891) (3.0,3.590440666) (4.0,2.195446892) (6.0,1.417660247) (8.0,1.179425413) (12.0,1.038201638)};
+\addlegendentry{KR, $d=4$}
+\addplot[osRef,dashed] coordinates {(1.5,1.5)(12,1.5)};
+\addlegendentry{Target error $1.5$}
+\end{axis}\end{tikzpicture}\endgroup
+\caption{Oversampling on one fixed input. Target rank is $r=32$, ambient dimension $N=16384$, and input rank $R=480$ throughout the sweep. The common-factor head has singular values one and the fixed generic tail has singular values $1/\sqrt{448}$, so its optimal squared tail is one. Common modes are $(512)$, $(16,32)$, and $(8,8,8)$ for orders $2,3,4$, all with product 512. Every width is a nested prefix of the same trial; all widths stay below the input rank. Lines are medians and bands are empirical 10--90\% quantiles from 96 independent trials per law. The dashed line marks relative error $1.5$; observed crossings are descriptive and are not sample-complexity guarantees.}
+\label{fig:oversampling}
+\end{figure}

@@ -6,7 +6,9 @@
     32,
     64,
     128,
-    256
+    256,
+    512,
+    1024
   ],
   "counts": {
     "8": 128,
@@ -14,7 +16,9 @@
     "32": 128,
     "64": 128,
     "128": 96,
-    "256": 64
+    "256": 64,
+    "512": 32,
+    "1024": 32
   },
   "common_mode_dimensions": {
     "2": [
@@ -50,5 +54,33 @@
   "smallest_qr_rank_margin": 8.178530311237483e-06,
   "seconds": 71.35371740000119,
   "coupling": "One fixed tail basis per rank shared across orders. All laws share the first-mode Gaussian draw within each trial. Other factors and the dense tail are independent. Ranks use independent streams.",
-  "interpretation": "Finite-size observations, not a theorem probability. Quantile bands are trial distributions, not confidence intervals."
+  "interpretation": "Finite-size observations, not a theorem probability. Quantile bands are trial distributions, not confidence intervals.",
+  "large_rank_extension": {
+    "validation": {
+      "haar_vs_scipy_qr_error": 0.0,
+      "blocked_contraction_error": 3.552713678800501e-15,
+      "compressed_svd_error": 4.218847493575595e-15,
+      "tail_cholesky_diagonal_ratio": 0.5683707211634317,
+      "head_cholesky_diagonal_ratio": 0.28420632764722975,
+      "qr_error_difference": 4.440892098500626e-16,
+      "qr_rank_margin": 0.06874385528589758
+    },
+    "ranks": [
+      512,
+      1024
+    ],
+    "checkpoint_files": [
+      "large_rank_512.json",
+      "large_rank_1024.json"
+    ],
+    "diagnostic_files": [
+      "large_rank_512_diagnostics.csv",
+      "large_rank_1024_diagnostics.csv"
+    ],
+    "algorithm": "Shared blocked contraction of actual product probes and an exact two-level-spectrum Woodbury error identity. No independent-tail surrogate.",
+    "old_observations": "Original raw CSV preserved as a byte-for-byte prefix."
+  },
+  "basis_orthogonality_errors_scope": "Full spectral norms through rank 256; sampled-column checks in large-rank checkpoint files.",
+  "smallest_qr_rank_margin_scope": "Only actual QR factorizations; large-rank Cholesky diagnostics are separate.",
+  "large_rank_seconds": 331.3806936000001
 }

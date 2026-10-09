@@ -1,3 +1,11 @@
+Rank-1024 extension
+===================
+The main figure now extends to ranks 512 and 1024, with 32 additional
+trials per law at each rank. Its two panels are stacked vertically.
+See LARGE_RANK_README.md for the exact memory-conscious calculation,
+independent checks, regenerated large bases, and complete reproduction.
+The original experiment through rank 256, documented below, is unchanged.
+
 Common-factor head with generic orthogonal tail
 ================================================
 Run: python head_tail_experiment.py --output rerun_head_tail

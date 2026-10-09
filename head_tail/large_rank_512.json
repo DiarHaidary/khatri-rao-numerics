@@ -1,0 +1,70 @@
+{
+  "r": 512,
+  "target_trials": 32,
+  "completed_trials": 32,
+  "seed": 2026100903,
+  "basis_seed_spawn_key": [
+    12
+  ],
+  "basis_shape": [
+    7680,
+    2562
+  ],
+  "basis_sha256_compact_C": "40419045aa6532a965ba93285941e7d68b04c9e31c1899990d49cf491ed91abe",
+  "sampled_64_column_orthogonality_error": 1.7763568394002505e-15,
+  "basis_storage": "Regenerated from seed; rows omit the head coordinates. Not stored as a large binary.",
+  "rng_states": [
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 292533036529411811063369658836559224198,
+        "inc": 317875316644952285578575477385437952441
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 337489955586059749614301088067969896104,
+        "inc": 42528901981073960089303441500421573973
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 319779771083251922388612520516092529209,
+        "inc": 26623940537100544343021091362001982575
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 33663349009387064665872517163321809419,
+        "inc": 220897714170803650529500092071058666443
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    },
+    {
+      "bit_generator": "PCG64",
+      "state": {
+        "state": 325189042377305713457684548036336244172,
+        "inc": 84105389426941208396439316290091345883
+      },
+      "has_uint32": 0,
+      "uinteger": 0
+    }
+  ],
+  "seconds": 49.6813398000013,
+  "python": "3.12.14",
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "blas_threads": 4,
+  "error_solver": "Exact Woodbury-Cholesky identity, with complete-column normalization. QR cross-check on dense and order-four trial zero.",
+  "note": "A blank qr_rank_margin means QR was not run for that draw; actual Cholesky diagnostics are in the accompanying diagnostics CSV."
+}

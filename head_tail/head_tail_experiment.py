@@ -7,7 +7,7 @@ sketch draws. No exact output-law transfer is used.
 import os
 for key in ('OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','OMP_NUM_THREADS'):
     os.environ[key]='1'
-import argparse, csv, json, platform, time
+import argparse, csv, json, platform, time, subprocess, sys
 from pathlib import Path
 import numpy as np
 import scipy
@@ -17,8 +17,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 SEED=2026100903
-RANKS=[8,16,32,64,128,256]
-COUNTS={8:128,16:128,32:128,64:128,128:96,256:64}
+RANKS=[8,16,32,64,128,256,512,1024]
+COUNTS={8:128,16:128,32:128,64:128,128:96,256:64,512:32,1024:32}
 FACTORS={2:[16],3:[4,4],4:[2,2,4]}
 COLORS={0:'#29234F',2:'#00B9D8',3:'#254BE8',4:'#EA5CB5'}
 MARKERS={0:'o',2:'s',3:'^',4:'D'}
@@ -61,7 +61,7 @@ def run(out):
     started=time.perf_counter()
     seeds=np.random.SeedSequence(SEED).spawn(2*len(RANKS))
     rows=[]; orth_errors=[]; max_svd_check=0.; max_tensor_check=0.
-    for k,r in enumerate(RANKS):
+    for k,r in enumerate([r for r in RANKS if r<=256]):
         m=3*r+1; N=16*r; R=2*m; s=R-r
         head_indices=np.arange(r)*16
         tail_indices=np.setdiff1d(np.arange(N),head_indices)
@@ -94,7 +94,7 @@ def run(out):
     save_csv(out/'head_tail_trials.csv',rows)
     summary=[]
     for d in [0,2,3,4]:
-        for r in RANKS:
+        for r in [r for r in RANKS if r<=256]:
             group=[v for v in rows if v['d']==d and v['r']==r]
             entry=dict(d=d,r=r,m=3*r+1,ambient_dimension=16*r,support_dimension=2*(3*r+1),trials=len(group))
             for key in ['lambda_min','lambda_max','rankr_ratio','projector_ratio']:
@@ -106,7 +106,7 @@ def run(out):
             entry['joint_fraction']=float(np.mean([v['lambda_max']>4 and v['rankr_ratio']<=1.5 for v in group]))
             summary.append(entry)
     save_csv(out/'head_tail_summary.csv',summary)
-    metadata=dict(seed=SEED,rank_values=RANKS,counts=COUNTS,common_mode_dimensions=FACTORS,
+    metadata=dict(seed=SEED,rank_values=[r for r in RANKS if r<=256],counts={r:COUNTS[r] for r in RANKS if r<=256},common_mode_dimensions=FACTORS,
                   ambient_multiplier=16,support_dimension='2m',sketch_size='3r+1',
                   python=platform.python_version(),numpy=np.__version__,scipy=scipy.__version__,
                   matplotlib=matplotlib.__version__,basis_orthogonality_errors=orth_errors,
@@ -115,22 +115,27 @@ def run(out):
                   coupling='One fixed tail basis per rank shared across orders. All laws share the first-mode Gaussian draw within each trial. Other factors and the dense tail are independent. Ranks use independent streams.',
                   interpretation='Finite-size observations, not a theorem probability. Quantile bands are trial distributions, not confidence intervals.')
     (out/'metadata.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
+    subprocess.run([sys.executable,str(Path(__file__).with_name('extend_head_tail.py')),'--output',str(out),'--ranks','512','1024','--trials','32'],check=True)
+    with (out/'head_tail_summary.csv').open(newline='',encoding='utf-8') as f:
+        summary=[{k:(int(v) if k in ['d','r','m','ambient_dimension','support_dimension','trials'] else float(v)) for k,v in row.items()} for row in csv.DictReader(f)]
+    metadata=json.loads((out/'metadata.json').read_text(encoding='utf-8'))
     plot(out,summary); inline(out,summary)
     print(json.dumps(metadata),flush=True)
 
 def plot(out,summary):
     plt.rcParams.update({'font.size':10,'pdf.fonttype':42,'ps.fonttype':42})
-    fig,axes=plt.subplots(1,2,figsize=(10,4))
+    fig,axes=plt.subplots(2,1,figsize=(10.5,8.2))
     for d in [0,2,3,4]:
         group=[v for v in summary if v['d']==d]
         for ax,key in zip(axes,['lambda_max','rankr_ratio']):
-            ax.fill_between(RANKS,[v[key+'_q10'] for v in group],[v[key+'_q90'] for v in group],color=COLORS[d],alpha=.20,lw=0)
-            ax.plot(RANKS,[v[key+'_q50'] for v in group],color=COLORS[d],marker=MARKERS[d],lw=1.8,label=LABELS[d])
+            xs=[v['r'] for v in group]
+            ax.fill_between(xs,[v[key+'_q10'] for v in group],[v[key+'_q90'] for v in group],color=COLORS[d],alpha=.20,lw=0)
+            ax.plot(xs,[v[key+'_q50'] for v in group],color=COLORS[d],marker=MARKERS[d],lw=1.8,label=LABELS[d])
             ax.set_xscale('log',base=2); ax.set_xticks(RANKS,labels=[str(r) for r in RANKS]); ax.grid(alpha=.2); ax.set_axisbelow(True)
             ax.set_xlabel('Target rank r (m = 3r + 1)')
-    axes[0].set(title='Common-factor head: upper edge',ylabel='Head Gram maximum eigenvalue',yscale='log')
+    axes[0].set(title='(a) Common-factor head: upper edge',ylabel='Head Gram maximum eigenvalue',yscale='log')
     axes[0].axhline((1+1/np.sqrt(3))**2,color=COLORS[0],ls='--',lw=1)
-    axes[1].set(title='Same input: rank-r approximation',ylabel='Squared error / optimal tail')
+    axes[1].set(title='(b) Same input: rank-r approximation',ylabel='Squared error / optimal tail')
     axes[1].axhline(1.5,color=COLORS[0],ls='--',lw=1)
     for ax in axes: ax.yaxis.labelpad=1
     axes[0].legend(frameon=False,fontsize=8)
@@ -140,7 +145,7 @@ def inline(out,summary):
     colors={0:'htInk',2:'htBlue',3:'htRose',4:'htViolet'}
     marks={0:'*',2:'square*',3:'triangle*',4:'diamond*'}
     lines=[r'\begin{figure}[!t]',r'\centering\begingroup',r'\definecolor{htInk}{HTML}{29234F}',r'\definecolor{htBlue}{HTML}{00B9D8}',r'\definecolor{htRose}{HTML}{254BE8}',r'\definecolor{htViolet}{HTML}{EA5CB5}',r'\begin{tikzpicture}',
-           r'\begin{groupplot}[group style={group size=2 by 1,horizontal sep=1.65cm},width=.38\linewidth,height=4.4cm,scale only axis,xmode=log,log basis x=2,xtick={8,16,32,64,128,256},xticklabels={8,16,32,64,128,256},xlabel={Target rank $r$ ($m=3r+1$)},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},ylabel style={xshift=6pt},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=gray!25},legend columns=4]']
+           r'\begin{groupplot}[group style={group size=1 by 2,vertical sep=1.9cm},width=.86\linewidth,height=4.3cm,scale only axis,xmode=log,log basis x=2,xtick={8,16,32,64,128,256,512,1024},xticklabels={8,16,32,64,128,256,512,1024},xlabel={Target rank $r$ ($m=3r+1$)},grid=major,grid style={gray!18},tick label style={font=\scriptsize},label style={font=\small},ylabel style={xshift=6pt},title style={font=\small\bfseries},legend style={font=\scriptsize,draw=gray!25},legend columns=4]']
     for panel,key in enumerate(['lambda_max','rankr_ratio']):
         lines.append(r'\nextgroupplot[title={' + ('(a) Common-factor head' if panel==0 else '(b) Same input: approximation')+'},ylabel={'+(r'$\lambda_{\max}$ of head Gram' if panel==0 else r'$\|A-\widehat A_r\|_F^2/\tau_r(A)$')+'}'+(',ymode=log,legend to name=htLegend' if panel==0 else '')+']')
         for d in [0,2,3,4]:
@@ -152,12 +157,12 @@ def inline(out,summary):
             lines.append(r'\addplot[color='+colors[d]+',thick,mark='+marks[d]+',mark size=1.7pt'+(',forget plot' if panel else '')+'] coordinates {'+coords('q50')+'};')
             if panel==0: lines.append(r'\addlegendentry{'+LABELS[d].replace('d=',r'$d=')+('$' if d else '')+'}')
         val=(1+1/np.sqrt(3))**2 if panel==0 else 1.5
-        lines.append(r'\addplot[htInk,dashed,forget plot] coordinates {(8,'+str(val)+')(256,'+str(val)+')};')
-    lines.extend([r'\end{groupplot}',r'\node[anchor=south] at ([yshift=.8cm]group c1r1.north east) {\pgfplotslegendfromname{htLegend}};',r'\end{tikzpicture}\endgroup',
-        r'\caption{A common-factor head with a generic orthogonal tail. The fixed input has ambient dimension $N=16r$ (up to 4096), support dimension $R=2m$, and $m=3r+1$. Its first $r$ right singular vectors form the Gaussian common-factor witness; the other $R-r$ vectors are a fixed Gaussian-QR basis in its orthogonal complement. Head singular values are one and tail singular values are $(R-r)^{-1/2}$, so $\tau_r(A)=1$ and zero output has ratio $r+1$. Mode dimensions are $(r,16)$, $(r,4,4)$, and $(r,2,2,4)$. The common-mode product is 16 in every order. Each rank uses one fixed input shared across all sketch laws, with 128 trials through $r=64$, 96 at $r=128$, and 64 at $r=256$. Lines are medians and bands are empirical 10--90\% quantiles. The left dashed line is the asymptotic dense upper edge; the right dashed line is the dense Gaussian expected-error bound of $1.5$. Neither is a finite-draw bound for the product sketches. Every range and error is computed separately; no exact output-law transfer is used.}',
+        lines.append(r'\addplot[htInk,dashed,forget plot] coordinates {(8,'+str(val)+')(1024,'+str(val)+')};')
+    lines.extend([r'\end{groupplot}',r'\node[anchor=south] at ([yshift=.8cm]group c1r1.north) {\pgfplotslegendfromname{htLegend}};',r'\end{tikzpicture}\endgroup',
+        r'\caption{A common-factor head with a generic orthogonal tail. Here $N=16r$ (up to 16384), $R=2m$, and $m=3r+1$. The first $r$ right singular vectors form the Gaussian common-factor witness; the other $R-r$ vectors are a fixed Gaussian-QR basis in its orthogonal complement. Head singular values are one and tail singular values are $(R-r)^{-1/2}$, so $\tau_r(A)=1$ and zero output has ratio $r+1$. Mode dimensions are $(r,16)$, $(r,4,4)$, and $(r,2,2,4)$; the common-mode product is 16 throughout. One fixed input per rank is shared across all laws, with 128 trials through $r=64$, 96 at $r=128$, 64 at $r=256$, and 32 each at $r=512,1024$. Lines are medians and bands are empirical 10--90\% quantiles. The dashed line in (a) is the asymptotic dense spectral edge; in (b), it is the dense Gaussian expected-error bound $1.5$. These are not finite-draw bounds for the product sketches. Every sketch and its error are evaluated separately, without an exact output-law transfer.}',
         r'\label{fig:head-tail}',r'\end{figure}'])
     (out/'head_tail_inline.tex').write_text('\n'.join(lines)+'\n',encoding='utf-8')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(); p.add_argument('--output',type=Path,default=Path(__file__).resolve().parent)
-    run(p.parse_args().output)
+    a=p.parse_args(); run(a.output)
